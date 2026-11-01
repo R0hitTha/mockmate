@@ -9,9 +9,7 @@ describe("Phase 1: Project Foundation & Architecture Tests", () => {
     expect(siteConfig.tagline).toBe("Rise Above the Competition");
     expect(siteConfig.targetExams).toContain("CUET UG 2026");
     expect(siteConfig.targetExams).toContain("CUET UG 2027");
-    expect(siteConfig.currentPhase).toBe(
-      "Phase 1: Project Initialization & Architecture"
-    );
+    expect(siteConfig.currentPhase).toBe("Phase 2: Premium UI/UX Design System");
   });
 
   it("should support all three mandatory CUET sections", () => {
