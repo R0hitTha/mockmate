@@ -4,6 +4,7 @@ import { StudentLayout } from "@/components/layout/student-layout";
 import { Container } from "@/components/layout/container";
 import { getServerSession, getStudentProfile } from "@/lib/auth-server";
 import { getStudentResults } from "@/lib/evaluation-service";
+import { getStudentDashboardAnalytics } from "@/lib/analytics-service";
 import { WelcomeBanner } from "@/components/dashboard/welcome-banner";
 import { OverviewMetrics } from "@/components/dashboard/overview-metrics";
 import { ContinuePreparationCard } from "@/components/dashboard/continue-preparation-card";
@@ -74,6 +75,8 @@ export default async function DashboardPage() {
     }),
   }));
 
+  const dashboardAnalytics = await getStudentDashboardAnalytics(session.user.id);
+
   return (
     <StudentLayout
       activeRoute="/dashboard"
@@ -122,7 +125,36 @@ export default async function DashboardPage() {
                 <MySubjectsSection subjects={subjects} targetExamYear={targetYear} />
 
                 {/* Section 6: Performance Snapshot */}
-                <PerformanceSnapshotSection />
+                <PerformanceSnapshotSection
+                  completedTests={dashboardAnalytics.completedTests}
+                  averageAccuracy={dashboardAnalytics.averageAccuracy}
+                  latestScore={
+                    dashboardAnalytics.latestResult
+                      ? {
+                          testTitle: dashboardAnalytics.latestResult.testTitle,
+                          totalMarks: dashboardAnalytics.latestResult.totalMarks,
+                          maximumMarks: dashboardAnalytics.latestResult.maximumMarks,
+                          percentage: dashboardAnalytics.latestResult.percentage,
+                        }
+                      : null
+                  }
+                  strongestSubject={
+                    dashboardAnalytics.strongestSubject
+                      ? {
+                          subjectName: dashboardAnalytics.strongestSubject.subjectName,
+                          accuracy: dashboardAnalytics.strongestSubject.accuracy,
+                        }
+                      : null
+                  }
+                  priorityImprovement={
+                    dashboardAnalytics.priorityImprovement
+                      ? {
+                          title: dashboardAnalytics.priorityImprovement.title,
+                          description: dashboardAnalytics.priorityImprovement.description,
+                        }
+                      : null
+                  }
+                />
 
                 {/* Section 5: Recent Activity */}
                 <RecentActivitySection activities={activities} />

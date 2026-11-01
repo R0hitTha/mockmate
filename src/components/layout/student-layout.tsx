@@ -128,8 +128,8 @@ export function StudentLayout({
       href: "/analytics",
       label: "My Performance",
       icon: BarChart3,
-      status: "phase-10",
-      badge: "Phase 10",
+      status: "active",
+      badge: null,
     },
     {
       href: "/planner",

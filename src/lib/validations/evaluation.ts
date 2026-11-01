@@ -114,3 +114,4 @@ export interface TestResultData {
   sections: TestResultSectionData[];
   questions: TestResultQuestionData[];
 }
+

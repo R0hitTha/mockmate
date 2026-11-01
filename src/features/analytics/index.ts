@@ -1,2 +1,3 @@
-// Feature module: Performance Analytics & Weakness Insights (Scheduled for Phase 11)
-export {};
+// Feature module: Performance Analytics & Weakness Insights (Phase 11)
+export * from "@/lib/validations/analytics";
+export * from "@/lib/analytics-service";

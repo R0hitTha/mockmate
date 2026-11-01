@@ -107,3 +107,4 @@ export function SectionBreakdown({ sections }: SectionBreakdownProps) {
     </Card>
   );
 }
+

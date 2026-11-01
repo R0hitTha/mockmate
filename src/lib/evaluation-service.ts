@@ -712,3 +712,4 @@ function mapDbResultToData(db: any): TestResultData {
     }),
   };
 }
+
