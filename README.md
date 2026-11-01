@@ -55,8 +55,8 @@ Ensure your development environment meets the following minimum requirements:
 1. Clone or open the repository:
 
    ```bash
-   git clone <repository-url>
-   cd "project assessment"
+   git clone https://github.com/R0hitTha/mockmate.git
+   cd mockmate
    ```
 
 2. Install dependencies:

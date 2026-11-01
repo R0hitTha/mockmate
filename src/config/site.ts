@@ -12,7 +12,7 @@ export const siteConfig = {
     { id: "iii", name: "Section III: General Test" },
   ],
   links: {
-    github: "https://github.com/mockmate",
+    github: "https://github.com/R0hitTha/mockmate",
   },
 } as const;
 
