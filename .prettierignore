@@ -1,0 +1,12 @@
+.next
+node_modules
+dist
+build
+coverage
+*.tsbuildinfo
+src/generated/prisma
+package-lock.json
+.agents
+.claude
+.windsurf
+skills-lock.json
