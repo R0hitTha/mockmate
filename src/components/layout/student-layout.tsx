@@ -21,6 +21,7 @@ import {
   Award,
   AlertCircle,
   Bot,
+  CreditCard,
 } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -158,6 +159,13 @@ export function StudentLayout({
       href: "/bookmarks",
       label: "Bookmarks",
       icon: Bookmark,
+      status: "active",
+      badge: null,
+    },
+    {
+      href: "/subscription",
+      label: "My Plan & Packs",
+      icon: CreditCard,
       status: "active",
       badge: null,
     },
@@ -441,6 +449,13 @@ export function StudentLayout({
                   <Link href="/profile" className="flex items-center gap-2">
                     <User className="w-4 h-4 text-muted-foreground" />
                     <span>Profile & Preferences</span>
+                  </Link>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link href="/subscription" className="flex items-center gap-2">
+                    <CreditCard className="w-4 h-4 text-muted-foreground" />
+                    <span>My Plan & Entitlements</span>
                   </Link>
                 </DropdownMenuItem>
 

@@ -4,31 +4,39 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  Shield,
-  FileQuestion,
-  BookOpen,
+  ShieldAlert,
   Users,
+  FileCheck2,
+  HelpCircle,
+  Award,
+  CreditCard,
+  Bot,
+  ScrollText,
   Settings,
   Menu,
   X,
-  ArrowLeft,
   LogOut,
   ChevronRight,
-  Database,
-  UploadCloud,
+  ExternalLink,
 } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumb, type BreadcrumbItem } from "@/components/layout/breadcrumb";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
+import {
+  isSuperAdmin,
+  canManageContent,
+  canManageSupport,
+  canManageFinance,
+} from "@/lib/admin-roles";
 
-interface AdminLayoutProps {
+export interface AdminLayoutProps {
   children: React.ReactNode;
-  activeRoute?: string;
   breadcrumbs?: BreadcrumbItem[];
+  activeRoute?: string;
   user?: {
     name?: string | null;
     email?: string | null;
@@ -39,8 +47,8 @@ interface AdminLayoutProps {
 
 export function AdminLayout({
   children,
-  activeRoute = "/admin/question-bank",
-  breadcrumbs = [{ label: "Admin Portal", href: "/admin" }, { label: "Question Bank" }],
+  breadcrumbs = [{ label: "Administration" }],
+  activeRoute = "/admin",
   user,
 }: AdminLayoutProps) {
   const router = useRouter();
@@ -48,8 +56,9 @@ export function AdminLayout({
 
   const { data: session } = authClient.useSession();
   const currentUser = user || session?.user;
-  const displayName = currentUser?.name || "Administrator";
-  const displayEmail = currentUser?.email || "admin@mockmate.in";
+  const userRole = (currentUser as { role?: string })?.role || "ADMIN";
+
+  const displayName = currentUser?.name || "Admin User";
 
   const initials =
     displayName
@@ -70,37 +79,88 @@ export function AdminLayout({
     }
   };
 
-  const adminNav = [
-    { label: "Admin Overview", icon: Shield, href: "/admin", badge: null },
-    { label: "Mock Test Library", icon: BookOpen, href: "/admin/mock-tests", badge: "Active" },
-    { label: "Build Mock Test", icon: Database, href: "/admin/mock-tests/new", badge: null },
-    { label: "Question Bank", icon: FileQuestion, href: "/admin/question-bank", badge: null },
-    { label: "Create Question", icon: Database, href: "/admin/question-bank/new", badge: null },
-    { label: "Bulk CSV Import", icon: UploadCloud, href: "/admin/question-bank/import", badge: null },
-    { label: "CUET Syllabus", icon: BookOpen, href: "/subjects", badge: null },
-    { label: "Students", icon: Users, href: "/admin/students", badge: "Phase 14" },
-    { label: "Settings", icon: Settings, href: "/admin/settings", badge: "Phase 14" },
+  const navLinks = [
+    {
+      href: "/admin",
+      label: "Overview",
+      icon: ShieldAlert,
+      visible: true,
+    },
+    {
+      href: "/admin/students",
+      label: "Students",
+      icon: Users,
+      visible: canManageSupport(userRole),
+    },
+    {
+      href: "/admin/question-bank",
+      label: "Question Bank",
+      icon: HelpCircle,
+      visible: canManageContent(userRole),
+    },
+    {
+      href: "/admin/mock-tests",
+      label: "Mock Tests",
+      icon: FileCheck2,
+      visible: canManageContent(userRole),
+    },
+    {
+      href: "/admin/results",
+      label: "Results & Attempts",
+      icon: Award,
+      visible: canManageSupport(userRole) || canManageContent(userRole),
+    },
+    {
+      href: "/admin/plans",
+      label: "Subscription Plans",
+      icon: CreditCard,
+      visible: canManageFinance(userRole) || isSuperAdmin(userRole),
+    },
+    {
+      href: "/admin/ai-usage",
+      label: "AI Telemetry",
+      icon: Bot,
+      visible: isSuperAdmin(userRole),
+    },
+    {
+      href: "/admin/audit-logs",
+      label: "Audit Logs",
+      icon: ScrollText,
+      visible: isSuperAdmin(userRole),
+    },
+    {
+      href: "/admin/settings",
+      label: "Platform Settings",
+      icon: Settings,
+      visible: isSuperAdmin(userRole),
+    },
   ];
+
+  const visibleNavLinks = navLinks.filter((n) => n.visible);
 
   return (
     <div className="min-h-screen flex bg-background text-foreground">
       {/* Desktop Sidebar */}
-      <aside className="w-64 border-r border-border bg-surface shrink-0 hidden lg:flex flex-col">
-        <div className="h-16 px-6 flex items-center border-b border-border">
+      <aside className="hidden lg:flex flex-col w-64 border-r border-border bg-surface shrink-0">
+        <div className="h-16 px-6 flex items-center justify-between border-b border-border">
           <Logo size="default" href="/admin" />
-        </div>
-
-        <div className="px-6 py-2.5 bg-primary/5 border-b border-border flex items-center justify-between text-[11px] font-bold text-primary uppercase tracking-wider">
-          <span>Question Management</span>
-          <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-primary/30 text-primary">
+          <Badge variant="outline" className="text-[10px] uppercase font-bold tracking-wider text-primary border-primary/30">
             Admin
           </Badge>
         </div>
 
-        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-          {adminNav.map((item) => {
+        {/* Navigation Links */}
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          <div className="px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+            Control Center
+          </div>
+
+          {visibleNavLinks.map((item) => {
             const Icon = item.icon;
-            const isActive = activeRoute === item.href;
+            const isActive =
+              activeRoute === item.href ||
+              (item.href !== "/admin" && activeRoute?.startsWith(item.href));
+
             return (
               <Link
                 key={item.href}
@@ -108,58 +168,49 @@ export function AdminLayout({
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors select-none",
                   isActive
-                    ? "bg-primary text-primary-foreground shadow-xs font-bold"
+                    ? "bg-primary text-primary-foreground shadow-2xs font-bold"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
                 <Icon className="w-4 h-4 shrink-0" />
                 <span className="truncate">{item.label}</span>
-                {item.badge && (
-                  <span
-                    className={cn(
-                      "ml-auto text-[10px] font-normal px-1.5 py-0.5 rounded-md",
-                      isActive
-                        ? "bg-primary-foreground/20 text-primary-foreground"
-                        : "bg-muted text-muted-foreground border border-border/60"
-                    )}
-                  >
-                    {item.badge}
-                  </span>
-                )}
-                {isActive && !item.badge && <ChevronRight className="w-3.5 h-3.5 ml-auto opacity-70" />}
+                {isActive && <ChevronRight className="w-3.5 h-3.5 ml-auto opacity-70" />}
               </Link>
             );
           })}
+
+          <div className="pt-4 px-3">
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-2 p-2 rounded-lg border border-border text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <span>Student Dashboard</span>
+              <ExternalLink className="w-3.5 h-3.5 ml-auto text-muted-foreground" />
+            </Link>
+          </div>
         </nav>
 
-        {/* Sidebar Footer */}
-        <div className="p-3 border-t border-border mt-auto space-y-2">
-          <Link
-            href="/dashboard"
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors border border-border/50"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Return to Student App</span>
-          </Link>
-
-          <div className="flex items-center justify-between p-2 rounded-xl bg-muted/60 border border-border/40">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <Avatar className="w-7 h-7 rounded-lg">
-                {currentUser?.image && <AvatarImage src={currentUser.image} alt={displayName} />}
-                <AvatarFallback className="rounded-lg text-[10px] font-bold bg-primary/10 text-primary">
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
-              <div className="min-w-0">
-                <p className="text-xs font-bold text-foreground truncate">{displayName}</p>
-                <p className="text-[10px] text-muted-foreground truncate">{displayEmail}</p>
-              </div>
+        {/* Sidebar Footer User Info */}
+        <div className="p-3 border-t border-border mt-auto">
+          <div className="flex items-center gap-3 p-2 rounded-xl bg-muted/60 border border-border/50">
+            <Avatar className="w-8 h-8 rounded-lg">
+              {currentUser?.image && (
+                <AvatarImage src={currentUser.image} alt={displayName} />
+              )}
+              <AvatarFallback className="rounded-lg text-xs font-bold bg-primary/10 text-primary">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold text-foreground truncate">{displayName}</p>
+              <p className="text-[10px] text-muted-foreground truncate">{userRole}</p>
             </div>
             <button
               type="button"
               onClick={handleLogout}
-              className="p-1 text-muted-foreground hover:text-destructive"
               title="Sign Out"
+              aria-label="Sign Out"
+              className="p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -167,80 +218,116 @@ export function AdminLayout({
         </div>
       </aside>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="fixed inset-0 bg-black/50" onClick={() => setMobileMenuOpen(false)} />
-          <div className="fixed inset-y-0 left-0 w-64 bg-surface border-r border-border p-4 flex flex-col z-50">
-            <div className="flex items-center justify-between pb-4 border-b border-border">
-              <Logo size="default" href="/admin" />
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-1 rounded-md text-muted-foreground hover:bg-muted"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <nav className="flex-1 py-4 space-y-1">
-              {adminNav.map((item) => {
-                const Icon = item.icon;
-                const isActive = activeRoute === item.href;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={cn(
-                      "flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold",
-                      isActive
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                    )}
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span>{item.label}</span>
-                  </Link>
-                );
-              })}
-            </nav>
-            <div className="pt-4 border-t border-border">
+        <div
+          className="fixed inset-0 z-50 bg-black/50 lg:hidden backdrop-blur-xs"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Mobile Slide-over Sidebar */}
+      <aside
+        className={cn(
+          "fixed top-0 bottom-0 left-0 z-50 w-72 bg-surface border-r border-border flex flex-col transition-transform duration-200 lg:hidden",
+          mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        <div className="h-16 px-6 flex items-center justify-between border-b border-border">
+          <Logo size="default" href="/admin" />
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close menu"
+            className="p-2 rounded-lg text-muted-foreground hover:text-foreground"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          <div className="px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+            Administration
+          </div>
+
+          {visibleNavLinks.map((item) => {
+            const Icon = item.icon;
+            const isActive =
+              activeRoute === item.href ||
+              (item.href !== "/admin" && activeRoute?.startsWith(item.href));
+
+            return (
               <Link
-                href="/dashboard"
-                className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-muted-foreground"
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors",
+                  isActive
+                    ? "bg-primary text-primary-foreground font-bold"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                )}
               >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Return to Student App</span>
+                <Icon className="w-4 h-4 shrink-0" />
+                <span>{item.label}</span>
               </Link>
+            );
+          })}
+        </nav>
+
+        <div className="p-3 border-t border-border mt-auto">
+          <div className="flex items-center justify-between p-2 rounded-xl bg-muted/60">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <Avatar className="w-8 h-8 rounded-lg">
+                <AvatarFallback className="rounded-lg text-xs font-bold">
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-foreground truncate">{displayName}</p>
+                <p className="text-[10px] text-muted-foreground truncate">{userRole}</p>
+              </div>
             </div>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
           </div>
         </div>
-      )}
+      </aside>
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 border-b border-border bg-surface flex items-center justify-between px-4 sm:px-6 shrink-0 sticky top-0 z-20">
-          <div className="flex items-center gap-3">
+        {/* Top Navbar */}
+        <header className="h-16 px-4 sm:px-6 lg:px-8 border-b border-border bg-surface flex items-center justify-between gap-4 sticky top-0 z-30">
+          <div className="flex items-center gap-3 min-w-0">
             <button
               type="button"
               onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden p-1.5 rounded-lg border border-border text-foreground hover:bg-muted"
-              aria-label="Open Navigation"
+              aria-label="Open menu"
+              className="lg:hidden p-2 -ml-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted"
             >
               <Menu className="w-5 h-5" />
             </button>
-            <Breadcrumb items={breadcrumbs} />
+
+            <div className="hidden sm:block min-w-0">
+              <Breadcrumb items={breadcrumbs} />
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Badge variant="outline" className="hidden sm:inline-flex text-[11px] font-mono">
-              CUET UG Engine
-            </Badge>
+          <div className="flex items-center gap-2 sm:gap-3">
             <ThemeToggle />
+            <Badge variant="outline" className="hidden sm:inline-flex text-xs font-bold text-primary bg-primary/10 border-primary/20">
+              {userRole}
+            </Badge>
           </div>
         </header>
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">{children}</main>
+        {/* Page Content */}
+        <main className="flex-1 min-w-0 bg-background">{children}</main>
       </div>
     </div>
   );

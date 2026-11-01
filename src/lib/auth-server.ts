@@ -50,10 +50,14 @@ export async function requireAuth(returnUrl: string = "/dashboard") {
  */
 export async function requireRole(allowedRoles: string | string[]) {
   const session = await requireAuth();
-  const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
+  const rawRoles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
+  const roles = new Set(rawRoles);
+  if (roles.has("ADMIN")) roles.add("SUPER_ADMIN");
+  if (roles.has("SUPER_ADMIN")) roles.add("ADMIN");
+
   const userRole = (session.user as { role?: string }).role || "STUDENT";
 
-  if (!roles.includes(userRole)) {
+  if (!roles.has(userRole)) {
     redirect("/dashboard?error=unauthorized");
   }
 
