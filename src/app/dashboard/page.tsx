@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { StudentLayout } from "@/components/layout/student-layout";
 import { Container } from "@/components/layout/container";
 import { getServerSession, getStudentProfile } from "@/lib/auth-server";
+import { getStudentResults } from "@/lib/evaluation-service";
 import { WelcomeBanner } from "@/components/dashboard/welcome-banner";
 import { OverviewMetrics } from "@/components/dashboard/overview-metrics";
 import { ContinuePreparationCard } from "@/components/dashboard/continue-preparation-card";
@@ -38,6 +39,41 @@ export default async function DashboardPage() {
   const universities = profile.universityPreferences || [];
   const hasGeneralTest = subjects.some((s) => s.category === "GENERAL_TEST");
 
+  // Fetch real evaluated mock test results for metrics
+  const { results: studentResults, total: testsAttempted } = await getStudentResults(
+    session.user.id,
+    { page: 1, limit: 10, sortBy: "date", sortOrder: "desc" }
+  );
+
+  const questionsAnswered = studentResults.reduce(
+    (sum, r) => sum + r.correctCount + r.incorrectCount,
+    0
+  );
+
+  const totalAttemptedQuestions = questionsAnswered;
+  const totalCorrectQuestions = studentResults.reduce(
+    (sum, r) => sum + r.correctCount,
+    0
+  );
+
+  const averageAccuracy =
+    totalAttemptedQuestions > 0
+      ? Math.round((totalCorrectQuestions / totalAttemptedQuestions) * 1000) / 10
+      : null;
+
+  const activities = studentResults.map((r) => ({
+    id: r.id,
+    type: "MOCK_EXAM" as const,
+    title: r.testTitle,
+    score: r.totalMarks,
+    maxScore: r.maximumMarks,
+    completedAt: new Date(r.evaluatedAt).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    }),
+  }));
+
   return (
     <StudentLayout
       activeRoute="/dashboard"
@@ -66,9 +102,9 @@ export default async function DashboardPage() {
 
             {/* Section 2: Real Preparation Overview Metrics */}
             <OverviewMetrics
-              testsAttempted={0}
-              questionsAnswered={0}
-              averageAccuracy={null}
+              testsAttempted={testsAttempted}
+              questionsAnswered={questionsAnswered}
+              averageAccuracy={averageAccuracy}
               syllabusCoverage={null}
             />
 
@@ -89,7 +125,7 @@ export default async function DashboardPage() {
                 <PerformanceSnapshotSection />
 
                 {/* Section 5: Recent Activity */}
-                <RecentActivitySection activities={[]} />
+                <RecentActivitySection activities={activities} />
               </div>
 
               {/* Sidebar Column (1 span on desktop) */}

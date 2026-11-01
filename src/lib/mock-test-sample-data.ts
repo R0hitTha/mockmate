@@ -106,7 +106,7 @@ export const SAMPLE_MOCK_TESTS: SampleMockTest[] = [
         totalMarks: 100,
         totalQuestions: 25,
         questionsToAttempt: 20,
-        questionCodes: ["Q-PHY-2026-001"],
+        questionCodes: ["Q-PHY-2026-006"],
       },
     ],
   },
@@ -294,3 +294,4 @@ export const SAMPLE_MOCK_TESTS: SampleMockTest[] = [
     ],
   },
 ];
+

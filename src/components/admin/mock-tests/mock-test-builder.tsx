@@ -103,7 +103,7 @@ export function MockTestBuilder({
     null
   );
 
-  // Form State
+  // Form State 
   const [title, setTitle] = useState(initialData?.title || "");
   const [slug, setSlug] = useState(initialData?.slug || "");
   const [testCode, setTestCode] = useState(initialData?.testCode || "");
@@ -119,7 +119,7 @@ export function MockTestBuilder({
   );
   const [instructions, setInstructions] = useState(
     initialData?.instructions ||
-      `### CUET UG Examination Instructions\n1. Attempt the required number of questions within the allocated time.\n2. +5 marks for correct response, -1 for incorrect response.\n3. Question palette allows easy navigation.`
+    `### CUET UG Examination Instructions\n1. Attempt the required number of questions within the allocated time.\n2. +5 marks for correct response, -1 for incorrect response.\n3. Question palette allows easy navigation.`
   );
   const [totalDuration, setTotalDuration] = useState<number>(initialData?.totalDuration || 45);
   const [isOfficialPattern, setIsOfficialPattern] = useState<boolean>(
@@ -145,33 +145,33 @@ export function MockTestBuilder({
   >(
     initialData?.sections?.length
       ? initialData.sections.map((s, idx) => ({
-          id: s.id,
-          title: s.title,
-          subjectId: s.subjectId,
-          sectionType: (s.sectionType === "OPTIONAL" ? "OPTIONAL" : "COMPULSORY") as "COMPULSORY" | "OPTIONAL",
-          description: s.description || "",
-          order: s.order || idx + 1,
-          duration: s.duration || undefined,
-          totalQuestions: s.totalQuestions || 50,
-          questionsToAttempt: s.questionsToAttempt || 40,
-          totalMarks: s.totalMarks || 200,
-          questionIds:
-            s.questions?.map((q) => q.id || q.questionId || "").filter(Boolean) ||
-            s.questionCodes ||
-            [],
-        }))
+        id: s.id,
+        title: s.title,
+        subjectId: s.subjectId,
+        sectionType: (s.sectionType === "OPTIONAL" ? "OPTIONAL" : "COMPULSORY") as "COMPULSORY" | "OPTIONAL",
+        description: s.description || "",
+        order: s.order || idx + 1,
+        duration: s.duration || undefined,
+        totalQuestions: s.totalQuestions || 50,
+        questionsToAttempt: s.questionsToAttempt || 40,
+        totalMarks: s.totalMarks || 200,
+        questionIds:
+          s.questions?.map((q) => q.id || q.questionId || "").filter(Boolean) ||
+          s.questionCodes ||
+          [],
+      }))
       : [
-          {
-            title: "Section A: Compulsory Core",
-            subjectId: defaultSubjectId,
-            sectionType: "COMPULSORY",
-            order: 1,
-            totalQuestions: 50,
-            questionsToAttempt: 40,
-            totalMarks: 200,
-            questionIds: [],
-          },
-        ]
+        {
+          title: "Section A: Compulsory Core",
+          subjectId: defaultSubjectId,
+          sectionType: "COMPULSORY",
+          order: 1,
+          totalQuestions: 50,
+          questionsToAttempt: 40,
+          totalMarks: 200,
+          questionIds: [],
+        },
+      ]
   );
 
   // Active question picker modal state
@@ -283,8 +283,7 @@ export function MockTestBuilder({
     }
     if (s.questionIds.length !== s.totalQuestions) {
       validationErrors.push(
-        `Section ${idx + 1} (${s.title}): Needs ${s.totalQuestions} questions selected (currently ${
-          s.questionIds.length
+        `Section ${idx + 1} (${s.title}): Needs ${s.totalQuestions} questions selected (currently ${s.questionIds.length
         }).`
       );
     }
@@ -418,22 +417,20 @@ export function MockTestBuilder({
                 key={step.num}
                 type="button"
                 onClick={() => setCurrentStep(step.num)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${
-                  isCurrent
+                className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${isCurrent
                     ? "bg-primary text-primary-foreground shadow-xs"
                     : isCompleted
-                    ? "text-primary hover:bg-primary/5"
-                    : "text-muted-foreground hover:bg-muted"
-                }`}
+                      ? "text-primary hover:bg-primary/5"
+                      : "text-muted-foreground hover:bg-muted"
+                  }`}
               >
                 <div
-                  className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${
-                    isCurrent
+                  className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${isCurrent
                       ? "bg-primary-foreground text-primary font-bold"
                       : isCompleted
-                      ? "bg-primary/20 text-primary"
-                      : "bg-muted text-muted-foreground"
-                  }`}
+                        ? "bg-primary/20 text-primary"
+                        : "bg-muted text-muted-foreground"
+                    }`}
                 >
                   {isCompleted ? "✓" : step.num}
                 </div>
@@ -448,11 +445,10 @@ export function MockTestBuilder({
       {/* Feedback Banner */}
       {feedback && (
         <div
-          className={`p-4 rounded-xl text-xs font-medium border flex items-center gap-2 ${
-            feedback.type === "success"
+          className={`p-4 rounded-xl text-xs font-medium border flex items-center gap-2 ${feedback.type === "success"
               ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-800 dark:text-emerald-300"
               : "bg-destructive/10 border-destructive/30 text-destructive"
-          }`}
+            }`}
         >
           {feedback.type === "success" ? (
             <CheckCircle className="w-4 h-4 shrink-0" />
@@ -740,11 +736,10 @@ export function MockTestBuilder({
                         <h4 className="text-sm font-bold text-foreground">{section.title}</h4>
                         <Badge
                           variant={isComplete ? "default" : "outline"}
-                          className={`text-[10px] ${
-                            isComplete
+                          className={`text-[10px] ${isComplete
                               ? "bg-emerald-600 text-white"
                               : "border-amber-500 text-amber-600 dark:text-amber-400"
-                          }`}
+                            }`}
                         >
                           {section.questionIds.length} / {section.totalQuestions} Questions Assigned
                         </Badge>
@@ -804,10 +799,10 @@ export function MockTestBuilder({
                             <Badge
                               variant={
                                 q.difficulty === "HARD"
-                                ? "destructive"
-                                : q.difficulty === "MEDIUM"
-                                ? "secondary"
-                                : "outline"
+                                  ? "destructive"
+                                  : q.difficulty === "MEDIUM"
+                                    ? "secondary"
+                                    : "outline"
                               }
                               className="text-[10px] py-0"
                             >
@@ -973,8 +968,8 @@ export function MockTestBuilder({
                     difficulty === "HARD"
                       ? "destructive"
                       : difficulty === "MEDIUM"
-                      ? "secondary"
-                      : "outline"
+                        ? "secondary"
+                        : "outline"
                   }
                 >
                   {difficulty}
@@ -1035,9 +1030,8 @@ export function MockTestBuilder({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div
               onClick={() => !isLocked && handleSave("DRAFT")}
-              className={`p-5 rounded-2xl border border-border bg-background hover:border-primary/50 transition-all cursor-pointer space-y-2 ${
-                isLocked ? "opacity-50 pointer-events-none" : ""
-              }`}
+              className={`p-5 rounded-2xl border border-border bg-background hover:border-primary/50 transition-all cursor-pointer space-y-2 ${isLocked ? "opacity-50 pointer-events-none" : ""
+                }`}
             >
               <div className="w-8 h-8 rounded-xl bg-muted flex items-center justify-center text-foreground font-bold">
                 <Save className="w-4 h-4" />
@@ -1050,9 +1044,8 @@ export function MockTestBuilder({
 
             <div
               onClick={() => !isLocked && handleSave("IN_REVIEW")}
-              className={`p-5 rounded-2xl border border-border bg-background hover:border-amber-500/50 transition-all cursor-pointer space-y-2 ${
-                isLocked ? "opacity-50 pointer-events-none" : ""
-              }`}
+              className={`p-5 rounded-2xl border border-border bg-background hover:border-amber-500/50 transition-all cursor-pointer space-y-2 ${isLocked ? "opacity-50 pointer-events-none" : ""
+                }`}
             >
               <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
                 <Eye className="w-4 h-4" />
@@ -1065,11 +1058,10 @@ export function MockTestBuilder({
 
             <div
               onClick={() => !isLocked && handleSave("PUBLISHED")}
-              className={`p-5 rounded-2xl border transition-all cursor-pointer space-y-2 ${
-                validationErrors.length > 0 || isLocked
+              className={`p-5 rounded-2xl border transition-all cursor-pointer space-y-2 ${validationErrors.length > 0 || isLocked
                   ? "border-border bg-muted/30 opacity-60 pointer-events-none"
                   : "border-primary bg-primary/5 hover:bg-primary/10"
-              }`}
+                }`}
             >
               <div className="w-8 h-8 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-bold">
                 <CheckCircle className="w-4 h-4" />

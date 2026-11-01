@@ -69,3 +69,4 @@ export default async function InstructionsPage({ params }: InstructionsPageProps
     </div>
   );
 }
+

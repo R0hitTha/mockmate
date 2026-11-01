@@ -57,25 +57,33 @@ export function RecentActivitySection({ activities = [] }: RecentActivitySection
         ) : (
           <div className="space-y-2">
             {activities.map((act) => (
-              <div
+              <Link
                 key={act.id}
-                className="p-3 rounded-lg border border-border flex items-center justify-between text-xs"
+                href={`/results/${act.id}`}
+                className="p-3 rounded-lg border border-border flex items-center justify-between text-xs hover:border-primary/50 hover:bg-muted/30 transition-all group block"
               >
                 <div className="flex items-center gap-2.5">
-                  <FileText className="w-4 h-4 text-primary" />
+                  <FileText className="w-4 h-4 text-primary group-hover:scale-105 transition-transform" />
                   <div>
-                    <div className="font-semibold text-foreground">{act.title}</div>
+                    <div className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                      {act.title}
+                    </div>
                     <div className="text-[10px] text-muted-foreground">
                       {act.completedAt}
                     </div>
                   </div>
                 </div>
                 {act.score !== undefined && act.maxScore !== undefined && (
-                  <span className="font-bold text-foreground">
-                    {act.score} / {act.maxScore}
-                  </span>
+                  <div className="text-right">
+                    <span className="font-bold text-foreground font-mono">
+                      {act.score} / {act.maxScore}
+                    </span>
+                    <span className="block text-[10px] text-primary">
+                      View Result →
+                    </span>
+                  </div>
                 )}
-              </div>
+              </Link>
             ))}
           </div>
         )}

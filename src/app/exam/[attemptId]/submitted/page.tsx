@@ -2,15 +2,10 @@ import React from "react";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
-import {
-  CheckCircle2,
-  Clock,
-  Calendar,
-  ArrowRight,
-  ShieldCheck,
-} from "lucide-react";
+import { CheckCircle2, Clock, Calendar, ArrowRight, Award } from "lucide-react";
 import { getServerSession } from "@/lib/auth-server";
 import { getAttemptSubmissionSummary, type SubmissionSummary } from "@/lib/cbt-service";
+import { evaluateAttempt } from "@/lib/evaluation-service";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Logo } from "@/components/brand/logo";
@@ -41,6 +36,7 @@ export default async function SubmissionPage({ params }: SubmissionPageProps) {
 
   const { attemptId } = await params;
   let summary: SubmissionSummary | null = null;
+  let evaluatedResultId: string | null = null;
 
   try {
     summary = await getAttemptSubmissionSummary(attemptId, session.user.id);
@@ -50,6 +46,15 @@ export default async function SubmissionPage({ params }: SubmissionPageProps) {
 
   if (!summary) {
     notFound();
+  }
+
+  try {
+    const evaluated = await evaluateAttempt(attemptId, session.user.id, false, false);
+    if (evaluated) {
+      evaluatedResultId = evaluated.id;
+    }
+  } catch (err) {
+    console.warn("Auto-evaluation on submission page:", err);
   }
 
   const formatDuration = (seconds: number | null) => {
@@ -160,16 +165,24 @@ export default async function SubmissionPage({ params }: SubmissionPageProps) {
             </div>
           </div>
 
-          {/* Scope Boundary Notice for Phase 10 */}
-          <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20 text-xs space-y-1.5 text-foreground">
-            <div className="flex items-center gap-2 font-bold text-primary">
-              <ShieldCheck className="w-4 h-4 shrink-0" />
-              <span>Evaluation in Progress (Phase 10)</span>
+          {/* Scorecard CTA */}
+          <div className="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs space-y-3 text-foreground">
+            <div className="flex items-center gap-2 font-bold text-emerald-800 dark:text-emerald-300">
+              <Award className="w-5 h-5 shrink-0" />
+              <span className="text-sm">Scorecard &amp; Solutions Evaluated</span>
             </div>
             <p className="text-muted-foreground leading-relaxed">
-              Your test has been submitted successfully. Your result, score breakdown (+5 / -1),
-              and detailed solutions will be available after evaluation.
+              Your test has been automatically evaluated according to the official CUET marking scheme (+5 for correct, -1 for incorrect). View your complete scorecard, section breakdown, and detailed academic solutions.
             </p>
+            <div>
+              <Link href={`/results/${evaluatedResultId || attemptId}`}>
+                <Button size="sm" className="w-full sm:w-auto text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs">
+                  <Award className="w-4 h-4 mr-1.5" />
+                  <span>View Detailed Result &amp; Solutions</span>
+                  <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                </Button>
+              </Link>
+            </div>
           </div>
 
           {/* Action Buttons */}

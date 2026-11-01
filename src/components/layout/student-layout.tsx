@@ -18,6 +18,7 @@ import {
   LogOut,
   ChevronRight,
   Shield,
+  Award,
 } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -106,6 +107,13 @@ export function StudentLayout({
       href: "/mock-tests",
       label: "Mock Tests",
       icon: FileCheck2,
+      status: "active",
+      badge: null,
+    },
+    {
+      href: "/results",
+      label: "My Results",
+      icon: Award,
       status: "active",
       badge: null,
     },

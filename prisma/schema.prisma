@@ -43,6 +43,7 @@ model User {
   mockTestsCreated MockTest[]       @relation("MockTestCreatedBy")
   mockTestsUpdated MockTest[]       @relation("MockTestUpdatedBy")
   testAttempts     TestAttempt[]
+  testResults      TestResult[]
 
   @@map("user")
 }
@@ -454,6 +455,7 @@ model MockTest {
 
   sections          MockTestSection[]
   attempts          TestAttempt[]
+  testResults       TestResult[]
 
   @@index([examYearId])
   @@index([status])
@@ -526,6 +528,7 @@ model TestAttempt {
 
   answers        AttemptAnswer[]
   events         AttemptEvent[]
+  result         TestResult?
 
   @@index([studentId])
   @@index([mockTestId])
@@ -568,4 +571,98 @@ model AttemptEvent {
   @@index([attemptId])
   @@index([eventType])
   @@map("attempt_event")
+}
+
+// -----------------------------------------------------------------------------
+// Phase 10: Evaluation & Result System Models
+// -----------------------------------------------------------------------------
+
+model TestResult {
+  id                 String              @id @default(cuid())
+  attemptId          String              @unique
+  attempt            TestAttempt         @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  studentId          String
+  student            User                @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  mockTestId         String
+  mockTest           MockTest            @relation(fields: [mockTestId], references: [id], onDelete: Restrict)
+  testVersionId      String?
+  totalMarks         Float               @default(0.0)
+  maximumMarks       Float               @default(0.0)
+  percentage         Float               @default(0.0)
+  accuracy           Float               @default(0.0)
+  correctCount       Int                 @default(0)
+  incorrectCount     Int                 @default(0)
+  unansweredCount    Int                 @default(0)
+  totalQuestions     Int                 @default(0)
+  timeTaken          Int?                // Time taken in seconds
+  status             String              @default("EVALUATED") // PENDING_EVALUATION, EVALUATING, EVALUATED, EVALUATION_FAILED
+  evaluatedAt        DateTime?           @default(now())
+  evaluationVersion  Int                 @default(1)
+  failureReason      String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  sections           TestResultSection[]
+  questions          TestResultQuestion[]
+
+  @@index([studentId])
+  @@index([mockTestId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("test_result")
+}
+
+model TestResultSection {
+  id                 String     @id @default(cuid())
+  resultId           String
+  result             TestResult @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  sectionId          String
+  sectionTitle       String
+  subjectId          String
+  subjectName        String
+  totalMarks         Float      @default(0.0)
+  maximumMarks       Float      @default(0.0)
+  correctCount       Int        @default(0)
+  incorrectCount     Int        @default(0)
+  unansweredCount    Int        @default(0)
+  totalQuestions     Int        @default(0)
+  accuracy           Float      @default(0.0)
+  createdAt          DateTime   @default(now())
+
+  @@index([resultId])
+  @@index([sectionId])
+  @@map("test_result_section")
+}
+
+model TestResultQuestion {
+  id                   String     @id @default(cuid())
+  resultId             String
+  result               TestResult @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  questionId           String
+  questionVersionId    String?
+  questionNumber       Int
+  sectionId            String
+  sectionTitle         String
+  questionText         String     @db.Text
+  passageText          String?    @db.Text
+  questionType         String     @default("MCQ_SINGLE")
+  selectedOptionId     String?
+  selectedOptionIds    String[]   @default([])
+  selectedOptionLabel  String?
+  correctOptionId      String?
+  correctOptionLabel   String?
+  optionsJson          String     @db.Text // Full snapshot of options with id, label, text, isCorrect
+  status               String     // CORRECT, INCORRECT, UNANSWERED
+  isCorrect            Boolean    @default(false)
+  markedForReview      Boolean    @default(false)
+  awardedMarks         Float      @default(0.0)
+  maximumMarks         Float      @default(5.0)
+  negativeMarksApplied Float      @default(0.0)
+  explanation          String?    @db.Text
+  createdAt            DateTime   @default(now())
+
+  @@index([resultId])
+  @@index([questionId])
+  @@index([status])
+  @@map("test_result_question")
 }
