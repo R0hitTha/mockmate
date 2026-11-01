@@ -11,6 +11,7 @@ import {
   CalendarDays,
   Bookmark,
   User,
+  Layers,
   Menu,
   X,
   Bell,
@@ -95,6 +96,13 @@ export function StudentLayout({
       badge: null,
     },
     {
+      href: "/subjects",
+      label: "CUET Syllabus",
+      icon: BookOpen,
+      status: "active",
+      badge: null,
+    },
+    {
       href: "/tests",
       label: "Mock Tests",
       icon: FileCheck2,
@@ -104,9 +112,9 @@ export function StudentLayout({
     {
       href: "/practice",
       label: "Subject Practice",
-      icon: BookOpen,
-      status: "phase-6",
-      badge: "Phase 6",
+      icon: Layers,
+      status: "phase-8",
+      badge: "Phase 8",
     },
     {
       href: "/analytics",
@@ -409,9 +417,9 @@ export function StudentLayout({
                 </DropdownMenuItem>
 
                 <DropdownMenuItem asChild className="cursor-pointer">
-                  <Link href="/cuet-subjects" className="flex items-center gap-2">
+                  <Link href="/subjects" className="flex items-center gap-2">
                     <BookOpen className="w-4 h-4 text-muted-foreground" />
-                    <span>CUET Syllabus Info</span>
+                    <span>CUET Syllabus Catalogue</span>
                   </Link>
                 </DropdownMenuItem>
 

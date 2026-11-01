@@ -107,6 +107,7 @@ model StudentProfile {
 
   subjectPreferences    StudentSubjectPreference[]
   universityPreferences StudentUniversityPreference[]
+  studentSubjects       StudentSubject[]
 
   @@index([normalizedPhone])
   @@map("student_profile")
@@ -139,4 +140,148 @@ model StudentUniversityPreference {
   @@unique([studentProfileId, universityCode])
   @@index([studentProfileId])
   @@map("student_university_preference")
+}
+
+// -----------------------------------------------------------------------------
+// Phase 6: CUET Subject & Syllabus Management Models
+// -----------------------------------------------------------------------------
+
+model ExamYear {
+  id        String   @id @default(cuid())
+  year      Int      @unique // 2026, 2027
+  name      String   // "CUET UG 2026"
+  status    String   @default("ACTIVE") // ACTIVE, UPCOMING, ARCHIVED
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  syllabusVersions SyllabusVersion[]
+  studentSubjects  StudentSubject[]
+
+  @@map("exam_year")
+}
+
+model SubjectCategory {
+  id          String   @id @default(cuid())
+  name        String   // "Languages", "Domain Subjects", "General Aptitude Test"
+  slug        String   @unique // "languages", "domain-subjects", "general-test"
+  code        String   // "SECTION_1", "SECTION_2", "SECTION_3"
+  description String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  subjects Subject[]
+
+  @@map("subject_category")
+}
+
+model Subject {
+  id          String          @id @default(cuid())
+  name        String          // "Physics", "Chemistry", "Mathematics", "English", etc.
+  slug        String          @unique // "physics", "chemistry", "mathematics"
+  code        String          // "314", "306", "101", "501"
+  categoryId  String
+  category    SubjectCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  description String?
+  icon        String?
+  status      String          @default("ACTIVE") // ACTIVE, INACTIVE
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  syllabusVersions SyllabusVersion[]
+  studentSubjects  StudentSubject[]
+
+  @@index([categoryId])
+  @@index([code])
+  @@map("subject")
+}
+
+model SyllabusVersion {
+  id            String    @id @default(cuid())
+  subjectId     String
+  subject       Subject   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  examYearId    String
+  examYear      ExamYear  @relation(fields: [examYearId], references: [id], onDelete: Cascade)
+  version       String    @default("1.0")
+  status        String    @default("PUBLISHED") // DRAFT, REVIEW, PUBLISHED, ARCHIVED
+  sourceName    String    // e.g. "NTA CUET UG Official Bulletin & NCERT Class 12"
+  sourceUrl     String?   // e.g. "https://exams.nta.ac.in/CUET-UG/"
+  verifiedAt    DateTime?
+  effectiveDate DateTime?
+  publishedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  units SyllabusUnit[]
+
+  @@unique([subjectId, examYearId, version])
+  @@index([subjectId])
+  @@index([examYearId])
+  @@index([status])
+  @@map("syllabus_version")
+}
+
+model SyllabusUnit {
+  id                String          @id @default(cuid())
+  syllabusVersionId String
+  syllabusVersion   SyllabusVersion @relation(fields: [syllabusVersionId], references: [id], onDelete: Cascade)
+  unitNumber        Int
+  title             String
+  description       String?
+  order             Int             @default(0)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  topics SyllabusTopic[]
+
+  @@index([syllabusVersionId])
+  @@map("syllabus_unit")
+}
+
+model SyllabusTopic {
+  id          String       @id @default(cuid())
+  unitId      String
+  unit        SyllabusUnit @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  order       Int          @default(0)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  subtopics SyllabusSubtopic[]
+
+  @@index([unitId])
+  @@map("syllabus_topic")
+}
+
+model SyllabusSubtopic {
+  id          String        @id @default(cuid())
+  topicId     String
+  topic       SyllabusTopic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  order       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([topicId])
+  @@map("syllabus_subtopic")
+}
+
+model StudentSubject {
+  id               String         @id @default(cuid())
+  studentProfileId String
+  studentProfile   StudentProfile @relation(fields: [studentProfileId], references: [id], onDelete: Cascade)
+  subjectId        String
+  subject          Subject        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  examYearId       String
+  examYear         ExamYear       @relation(fields: [examYearId], references: [id], onDelete: Cascade)
+  selectedAt       DateTime       @default(now())
+
+  @@unique([studentProfileId, subjectId, examYearId])
+  @@index([studentProfileId])
+  @@index([subjectId])
+  @@index([examYearId])
+  @@map("student_subject")
 }

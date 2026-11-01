@@ -17,6 +17,25 @@ export interface MySubjectsSectionProps {
   targetExamYear: number;
 }
 
+function getSubjectSlug(name: string): string {
+  const n = name.toLowerCase();
+  if (n.includes("physics")) return "physics";
+  if (n.includes("chemistry")) return "chemistry";
+  if (n.includes("math")) return "mathematics";
+  if (n.includes("biology")) return "biology";
+  if (n.includes("account")) return "accountancy";
+  if (n.includes("business")) return "business-studies";
+  if (n.includes("econ")) return "economics";
+  if (n.includes("history")) return "history";
+  if (n.includes("polit")) return "political-science";
+  if (n.includes("geograph")) return "geography";
+  if (n.includes("computer")) return "computer-science";
+  if (n.includes("english")) return "english";
+  if (n.includes("hindi")) return "hindi";
+  if (n.includes("general") || n.includes("aptitude")) return "general-test";
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
 export function MySubjectsSection({ subjects, targetExamYear }: MySubjectsSectionProps) {
   const languages = subjects.filter((s) => s.category === "LANGUAGE");
   const domains = subjects.filter((s) => s.category === "DOMAIN");
@@ -58,12 +77,20 @@ export function MySubjectsSection({ subjects, targetExamYear }: MySubjectsSectio
             Configured for your CUET UG {targetExamYear} examination curriculum
           </p>
         </div>
-        <Button variant="ghost" size="sm" asChild className="text-xs">
-          <Link href="/profile" className="flex items-center gap-1.5">
-            <span>Edit Subjects</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" asChild className="text-xs">
+            <Link href="/subjects" className="flex items-center gap-1.5">
+              <span>View Syllabus</span>
+              <BookOpen className="w-3.5 h-3.5" />
+            </Link>
+          </Button>
+          <Button variant="ghost" size="sm" asChild className="text-xs">
+            <Link href="/profile" className="flex items-center gap-1.5">
+              <span>Edit Subjects</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -86,20 +113,21 @@ export function MySubjectsSection({ subjects, targetExamYear }: MySubjectsSectio
 
             <div className="space-y-2">
               {languages.map((lang) => (
-                <div
+                <Link
                   key={lang.id}
-                  className="p-2.5 rounded-lg border border-border/80 bg-muted/30 flex items-center justify-between text-xs"
+                  href={`/subjects/${getSubjectSlug(lang.subjectName)}?year=${targetExamYear}`}
+                  className="p-2.5 rounded-lg border border-border/80 bg-muted/30 flex items-center justify-between text-xs hover:border-primary/50 hover:bg-primary/5 transition-colors group"
                 >
                   <div className="space-y-0.5 min-w-0 pr-2">
-                    <div className="font-semibold text-foreground truncate">
+                    <div className="font-semibold text-foreground truncate group-hover:text-primary transition-colors">
                       {lang.subjectName}
                     </div>
                     <div className="text-[10px] text-muted-foreground">
-                      Code: {lang.subjectCode} • Reading Comprehension
+                      Code: {lang.subjectCode} • View Syllabus →
                     </div>
                   </div>
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                </div>
+                </Link>
               ))}
               {languages.length === 0 && (
                 <p className="text-xs text-muted-foreground py-2 text-center">
@@ -129,20 +157,21 @@ export function MySubjectsSection({ subjects, targetExamYear }: MySubjectsSectio
 
             <div className="space-y-2">
               {domains.map((dom) => (
-                <div
+                <Link
                   key={dom.id}
-                  className="p-2.5 rounded-lg border border-border/80 bg-muted/30 flex items-center justify-between text-xs"
+                  href={`/subjects/${getSubjectSlug(dom.subjectName)}?year=${targetExamYear}`}
+                  className="p-2.5 rounded-lg border border-border/80 bg-muted/30 flex items-center justify-between text-xs hover:border-primary/50 hover:bg-primary/5 transition-colors group"
                 >
                   <div className="space-y-0.5 min-w-0 pr-2">
-                    <div className="font-semibold text-foreground truncate">
+                    <div className="font-semibold text-foreground truncate group-hover:text-primary transition-colors">
                       {dom.subjectName}
                     </div>
                     <div className="text-[10px] text-muted-foreground">
-                      Code: {dom.subjectCode} • NCERT Class 12
+                      Code: {dom.subjectCode} • View Syllabus →
                     </div>
                   </div>
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                </div>
+                </Link>
               ))}
               {domains.length === 0 && (
                 <p className="text-xs text-muted-foreground py-2 text-center">
@@ -172,17 +201,20 @@ export function MySubjectsSection({ subjects, targetExamYear }: MySubjectsSectio
 
             <div className="space-y-2">
               {generalTest.length > 0 ? (
-                <div className="p-2.5 rounded-lg border border-border/80 bg-muted/30 flex items-center justify-between text-xs">
+                <Link
+                  href={`/subjects/general-test?year=${targetExamYear}`}
+                  className="p-2.5 rounded-lg border border-border/80 bg-muted/30 flex items-center justify-between text-xs hover:border-primary/50 hover:bg-primary/5 transition-colors group"
+                >
                   <div className="space-y-0.5 min-w-0 pr-2">
-                    <div className="font-semibold text-foreground">
+                    <div className="font-semibold text-foreground group-hover:text-primary transition-colors">
                       General Aptitude Test (GT)
                     </div>
                     <div className="text-[10px] text-muted-foreground">
-                      Code: 501 • Quant, Logic, GK & Current Affairs
+                      Code: 501 • View Syllabus →
                     </div>
                   </div>
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                </div>
+                </Link>
               ) : (
                 <div className="py-4 text-center space-y-2">
                   <p className="text-xs text-muted-foreground">
