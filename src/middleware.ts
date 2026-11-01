@@ -10,11 +10,16 @@ export function middleware(request: NextRequest) {
   const isProtectedRoute =
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/profile") ||
-    pathname.startsWith("/onboarding");
+    pathname.startsWith("/onboarding") ||
+    pathname.startsWith("/tests") ||
+    pathname.startsWith("/practice") ||
+    pathname.startsWith("/analytics") ||
+    pathname.startsWith("/planner") ||
+    pathname.startsWith("/bookmarks");
 
   const isAdminRoute = pathname.startsWith("/admin");
 
-  // Unauthenticated user trying to access protected routes
+  // Unauthenticated user trying to access protected student routes
   if (isProtectedRoute && !sessionCookie) {
     const callbackUrl = encodeURIComponent(pathname);
     return NextResponse.redirect(
@@ -35,6 +40,11 @@ export const config = {
     "/dashboard/:path*",
     "/profile/:path*",
     "/onboarding/:path*",
+    "/tests/:path*",
+    "/practice/:path*",
+    "/analytics/:path*",
+    "/planner/:path*",
+    "/bookmarks/:path*",
     "/admin/:path*",
   ],
 };
