@@ -42,6 +42,7 @@ model User {
 
   mockTestsCreated MockTest[]       @relation("MockTestCreatedBy")
   mockTestsUpdated MockTest[]       @relation("MockTestUpdatedBy")
+  testAttempts     TestAttempt[]
 
   @@map("user")
 }
@@ -359,6 +360,7 @@ model Question {
   reviews           QuestionReview[]
   tags              QuestionTagRelation[]
   mockTestQuestions MockTestQuestion[]
+  attemptAnswers    AttemptAnswer[]
 
   @@index([subjectId])
   @@index([examYearId])
@@ -451,6 +453,7 @@ model MockTest {
   updatedAt         DateTime          @updatedAt
 
   sections          MockTestSection[]
+  attempts          TestAttempt[]
 
   @@index([examYearId])
   @@index([status])
@@ -499,4 +502,70 @@ model MockTestQuestion {
   @@index([sectionId])
   @@index([questionId])
   @@map("mock_test_question")
+}
+
+// -----------------------------------------------------------------------------
+// Phase 9: CBT Examination Engine Models
+// -----------------------------------------------------------------------------
+
+model TestAttempt {
+  id             String          @id @default(cuid())
+  studentId      String
+  student        User            @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  mockTestId     String
+  mockTest       MockTest        @relation(fields: [mockTestId], references: [id], onDelete: Restrict)
+  status         String          @default("IN_PROGRESS") // IN_PROGRESS, SUBMITTED, AUTO_SUBMITTED, EXPIRED, CANCELLED
+  startedAt      DateTime        @default(now())
+  expiresAt      DateTime
+  submittedAt    DateTime?
+  timeTaken      Int?            // Duration spent in seconds
+  totalQuestions Int             @default(0)
+  attemptNumber  Int             @default(1)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  answers        AttemptAnswer[]
+  events         AttemptEvent[]
+
+  @@index([studentId])
+  @@index([mockTestId])
+  @@index([status])
+  @@index([expiresAt])
+  @@map("test_attempt")
+}
+
+model AttemptAnswer {
+  id                 String      @id @default(cuid())
+  attemptId          String
+  attempt            TestAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId         String
+  question           Question    @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  selectedOptionId   String?
+  selectedOptionIds  String[]    @default([])
+  answerPayload      String?     @db.Text
+  answerStatus       String      @default("NOT_VISITED") // NOT_VISITED, NOT_ANSWERED, ANSWERED, MARKED_FOR_REVIEW, ANSWERED_AND_MARKED_FOR_REVIEW
+  markedForReview    Boolean     @default(false)
+  answeredAt         DateTime?
+  version            Int         @default(1)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  @@unique([attemptId, questionId])
+  @@index([attemptId])
+  @@index([questionId])
+  @@index([answerStatus])
+  @@map("attempt_answer")
+}
+
+model AttemptEvent {
+  id         String      @id @default(cuid())
+  attemptId  String
+  attempt    TestAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  eventType  String      // ATTEMPT_STARTED, ANSWER_SAVED, ANSWER_CLEARED, MARKED_FOR_REVIEW, SECTION_CHANGED, SUBMITTED, AUTO_SUBMITTED
+  payload    String?     @db.Text
+  createdAt  DateTime    @default(now())
+
+  @@index([attemptId])
+  @@index([eventType])
+  @@map("attempt_event")
 }

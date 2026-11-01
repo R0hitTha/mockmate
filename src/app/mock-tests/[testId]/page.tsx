@@ -282,6 +282,7 @@ export default async function StudentMockTestDetailPage({
                 <StartTestDialog
                   testTitle={test.title}
                   testCode={test.testCode}
+                  testSlug={test.slug}
                   totalDuration={test.totalDuration}
                   totalMarks={test.totalMarks}
                   questionsToAttempt={test.questionsToAttempt}

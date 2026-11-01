@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/badge";
 interface StartTestDialogProps {
   testTitle: string;
   testCode: string;
+  testSlug?: string;
   totalDuration: number;
   totalMarks: number;
   questionsToAttempt: number;
@@ -29,6 +30,7 @@ interface StartTestDialogProps {
 export function StartTestDialog({
   testTitle,
   testCode,
+  testSlug,
   totalDuration,
   totalMarks,
   questionsToAttempt,
@@ -36,6 +38,7 @@ export function StartTestDialog({
   sectionsCount,
 }: StartTestDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const instructionsHref = `/mock-tests/${testSlug || testCode}/instructions`;
 
   return (
     <>
@@ -77,17 +80,16 @@ export function StartTestDialog({
 
             {/* Modal Content */}
             <div className="p-6 space-y-5">
-              {/* CBT Engine Coming Notice */}
+              {/* CBT Engine Active Notice */}
               <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20 space-y-2">
                 <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
                   <Sparkles className="w-4 h-4" />
-                  <span>Phase 9 Live CBT Engine Preview</span>
+                  <span>Phase 9 CBT Examination Room Ready</span>
                 </div>
                 <p className="text-xs text-foreground leading-relaxed">
-                  This mock examination has been formulated and validated in the MockMate Test Library
-                  (Phase 8). The interactive <strong>Computer-Based Test (CBT) Examination Engine</strong>{" "}
-                  featuring the live countdown clock, question palette, response auto-save, and instant evaluation
-                  is scheduled for deployment in <strong>Phase 9</strong>.
+                  You are about to begin the Computer-Based Test (CBT). You will enter a distraction-free
+                  timed examination environment with full-screen question palette, authoritative server countdown,
+                  and automatic answer persistence.
                 </p>
               </div>
 
@@ -135,7 +137,7 @@ export function StartTestDialog({
 
               <div className="text-[11px] text-muted-foreground flex items-center gap-2 bg-muted/20 p-2.5 rounded-xl">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>All questions and optionality rules are compiled and verified for launch.</span>
+                <span>Before entering, you will review and acknowledge the official exam instructions.</span>
               </div>
             </div>
 
@@ -147,12 +149,12 @@ export function StartTestDialog({
                 onClick={() => setIsOpen(false)}
                 className="text-xs"
               >
-                Close Preview
+                Cancel
               </Button>
 
-              <Link href="/mock-tests">
-                <Button size="sm" className="text-xs">
-                  <span>Browse More Tests</span>
+              <Link href={instructionsHref}>
+                <Button size="sm" className="text-xs font-bold shadow-xs">
+                  <span>Review Instructions & Begin</span>
                   <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </Button>
               </Link>
