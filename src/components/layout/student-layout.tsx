@@ -20,6 +20,7 @@ import {
   Shield,
   Award,
   AlertCircle,
+  Bot,
 } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -140,11 +141,18 @@ export function StudentLayout({
       badge: null,
     },
     {
-      href: "/planner",
+      href: "/study-planner",
       label: "Study Planner",
       icon: CalendarDays,
-      status: "phase-13",
-      badge: "Phase 13",
+      status: "active",
+      badge: null,
+    },
+    {
+      href: "/ai-assistant",
+      label: "AI Assistant",
+      icon: Bot,
+      status: "active",
+      badge: null,
     },
     {
       href: "/bookmarks",
@@ -183,7 +191,9 @@ export function StudentLayout({
 
           {navLinks.map((item) => {
             const Icon = item.icon;
-            const isActive = activeRoute === item.href;
+            const isActive =
+              activeRoute === item.href ||
+              (item.href !== "/dashboard" && activeRoute?.startsWith(item.href));
 
             return (
               <Link
@@ -273,7 +283,9 @@ export function StudentLayout({
 
           {navLinks.map((item) => {
             const Icon = item.icon;
-            const isActive = activeRoute === item.href;
+            const isActive =
+              activeRoute === item.href ||
+              (item.href !== "/dashboard" && activeRoute?.startsWith(item.href));
 
             return (
               <Link

@@ -46,6 +46,11 @@ model User {
   testResults      TestResult[]
   mistakeReviews   MistakeReview[]
   bookmarks        QuestionBookmark[]
+  studyPreference  StudyPreference?
+  studyPlans       StudyPlan[]
+  studyTasks       StudyTask[]
+  aiConversations  AIConversation[]
+  aiUsages         AIUsage[]
 
   @@map("user")
 }
@@ -207,6 +212,7 @@ model Subject {
   questions        Question[]
   questionPassages QuestionPassage[]
   mockTestSections MockTestSection[]
+  studyTasks       StudyTask[]
 
   @@index([categoryId])
   @@index([code])
@@ -269,6 +275,7 @@ model SyllabusTopic {
 
   subtopics SyllabusSubtopic[]
   questions Question[]
+  studyTasks StudyTask[]
 
   @@index([unitId])
   @@map("syllabus_topic")
@@ -460,6 +467,7 @@ model MockTest {
   sections          MockTestSection[]
   attempts          TestAttempt[]
   testResults       TestResult[]
+  studyTasks        StudyTask[]
 
   @@index([examYearId])
   @@index([status])
@@ -715,4 +723,125 @@ model QuestionBookmark {
   @@index([studentId])
   @@index([questionId])
   @@map("question_bookmark")
+}
+
+// -----------------------------------------------------------------------------
+// Phase 13: Study Planner & AI Assistant Models
+// -----------------------------------------------------------------------------
+
+model StudyPreference {
+  id                      String   @id @default(cuid())
+  studentId               String   @unique
+  student                 User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  weeklyTargetMinutes     Int      @default(720) // Default 12 hours (720 mins)
+  dailyTargetMinutes      Int      @default(120) // Default 2 hours (120 mins)
+  preferredSessionMinutes Int      @default(45)  // Default 45 mins
+  preferredStudyDays      String[] @default(["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"])
+  restDays                String[] @default(["SUNDAY"])
+  subjectPriorities       String[] @default([]) // Array of subject IDs or codes
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  @@index([studentId])
+  @@map("study_preference")
+}
+
+model StudyPlan {
+  id            String      @id @default(cuid())
+  studentId     String
+  student       User        @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  title         String      // e.g. "Weekly Plan: 03 Nov - 09 Nov 2026"
+  weekStartDate DateTime
+  weekEndDate   DateTime
+  status        String      @default("ACTIVE") // ACTIVE, ARCHIVED, SUPERSEDED
+  generatedAt   DateTime    @default(now())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  tasks         StudyTask[]
+
+  @@index([studentId])
+  @@index([status])
+  @@index([weekStartDate, weekEndDate])
+  @@map("study_plan")
+}
+
+model StudyTask {
+  id                     String         @id @default(cuid())
+  studyPlanId            String
+  studyPlan              StudyPlan      @relation(fields: [studyPlanId], references: [id], onDelete: Cascade)
+  studentId              String
+  student                User           @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  title                  String
+  description            String?        @db.Text
+  taskType               String         // THEORY_REVISION, TOPIC_PRACTICE, MISTAKE_REVIEW, MOCK_TEST, SECTIONAL_TEST, CUSTOM_TASK
+  subjectId              String?
+  subject                Subject?       @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  topicId                String?
+  topic                  SyllabusTopic? @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  linkedMockTestId       String?
+  linkedMockTest         MockTest?      @relation(fields: [linkedMockTestId], references: [id], onDelete: SetNull)
+  plannedDate            DateTime       // Date for which the task is scheduled
+  plannedDurationMinutes Int            @default(45)
+  actualDurationMinutes  Int?           // Tracked or logged duration
+  status                 String         @default("PLANNED") // PLANNED, IN_PROGRESS, COMPLETED, SKIPPED, RESCHEDULED
+  completedAt            DateTime?
+  recommendationSource   String?        // e.g. "MISTAKE_INTELLIGENCE", "SYLLABUS_PROGRESS", "STUDENT_CUSTOM", "AI_SUGGESTION"
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+
+  @@index([studyPlanId])
+  @@index([studentId])
+  @@index([plannedDate])
+  @@index([status])
+  @@index([subjectId])
+  @@index([topicId])
+  @@map("study_task")
+}
+
+model AIConversation {
+  id          String      @id @default(cuid())
+  studentId   String
+  student     User        @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  title       String      @default("New Conversation")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  messages    AIMessage[]
+
+  @@index([studentId])
+  @@index([createdAt])
+  @@map("ai_conversation")
+}
+
+model AIMessage {
+  id               String         @id @default(cuid())
+  conversationId   String
+  conversation     AIConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role             String         // "user", "assistant", "system"
+  content          String         @db.Text
+  providerMetadata String?        @db.Text // JSON string with model, tokens if safe
+  createdAt        DateTime       @default(now())
+
+  @@index([conversationId])
+  @@index([createdAt])
+  @@map("ai_message")
+}
+
+model AIUsage {
+  id           String   @id @default(cuid())
+  studentId    String
+  student      User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  date         String   // YYYY-MM-DD for daily quota
+  provider     String   // "google", "openai", "mock"
+  model        String   // "gemini-2.0-flash", etc.
+  requestCount Int      @default(0)
+  tokenUsage   Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([studentId, date, provider])
+  @@index([studentId])
+  @@index([date])
+  @@map("ai_usage")
 }

@@ -6,6 +6,7 @@ import { getServerSession, getStudentProfile } from "@/lib/auth-server";
 import { getStudentResults } from "@/lib/evaluation-service";
 import { getStudentDashboardAnalytics } from "@/lib/analytics-service";
 import { getStudentDashboardMistakeSummary } from "@/lib/mistake-service";
+import { getStudentStudyPlannerData } from "@/lib/study-planner-service";
 import { WelcomeBanner } from "@/components/dashboard/welcome-banner";
 import { OverviewMetrics } from "@/components/dashboard/overview-metrics";
 import { ContinuePreparationCard } from "@/components/dashboard/continue-preparation-card";
@@ -13,6 +14,7 @@ import { MySubjectsSection } from "@/components/dashboard/my-subjects-section";
 import { RecentActivitySection } from "@/components/dashboard/recent-activity-section";
 import { PerformanceSnapshotSection } from "@/components/dashboard/performance-snapshot-section";
 import { DashboardMistakeCard } from "@/components/mistakes/dashboard-mistake-card";
+import { DashboardStudyPlannerCard } from "@/components/planner/dashboard-study-planner-card";
 import { PreparationRecommendations } from "@/components/dashboard/preparation-recommendations";
 import { UpcomingDeadlines } from "@/components/dashboard/upcoming-deadlines";
 
@@ -79,6 +81,7 @@ export default async function DashboardPage() {
 
   const dashboardAnalytics = await getStudentDashboardAnalytics(session.user.id);
   const mistakeSummary = await getStudentDashboardMistakeSummary(session.user.id);
+  const plannerData = await getStudentStudyPlannerData(session.user.id);
 
   return (
     <StudentLayout
@@ -165,6 +168,16 @@ export default async function DashboardPage() {
 
               {/* Sidebar Column (1 span on desktop) */}
               <div className="space-y-8">
+                {/* Section: Study Planner */}
+                <DashboardStudyPlannerCard
+                  weeklyTargetMinutes={plannerData.weeklyTargetMinutes}
+                  completedMinutes={plannerData.completedMinutes}
+                  progressPercentage={plannerData.progressPercentage}
+                  todayTasksCount={plannerData.todayTasks.length}
+                  nextTaskTitle={plannerData.todayTasks[0]?.title || null}
+                  hasActivePlan={Boolean(plannerData.activePlan)}
+                />
+
                 {/* Section: Mistake Intelligence */}
                 <DashboardMistakeCard
                   pendingReviewCount={mistakeSummary.pendingReviewCount}
