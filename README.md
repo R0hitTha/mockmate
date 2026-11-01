@@ -218,13 +218,16 @@ mockmate/
 
 ## 10. Current Development Phase
 
-- **Active Milestone:** **Phase 2: Premium UI/UX Design System** (Completed).
+- **Active Milestone:** **Phase 3: Public Website Development** (Completed).
 - **Status:** Verified and stable.
-  - Color palette established with brand Navy (`#244B8F`), text (`#172B4D`), light blue accent (`#EAF1FC`), surface (`#FFFFFF`), and NTA CBT question palette states.
-  - Complete Radix UI + shadcn component library implemented (Button, IconButton, Input, Textarea, Select, Checkbox, RadioGroup, Switch, Label, Badge, Avatar, Separator, Tooltip, Dialog, Tabs, DropdownMenu).
-  - Feedback primitives created (Alert, Skeleton, LoadingSpinner, ProgressBar, EmptyState, ErrorState, ConfirmDialog).
-  - Application layout shells built (PublicLayout, StudentLayout with responsive sidebar, AdminLayout foundation, Breadcrumb, Container, PageHeader, SectionHeader, ResponsiveGrid, Card).
-  - CBT Examination Design Foundation built (CBTPaletteItem, CBTOptionItem, CBTTimer, CBTQuestionContainer).
-  - Interactive Design System showcase running on `/` with dark/light theme switching.
-  - 8/8 Vitest tests passing; ESLint, TypeScript, and Turbopack production builds passing with 0 errors.
-- **Next Milestone:** **Phase 3: Public Website & Marketing Pages** (Awaiting approval).
+  - Complete public website built using Phase 2 design system tokens and components.
+  - Homepage (`/`) with all 12 structured sections: Hero, The Preparation Problem, MockMate Solution, Core Features, How It Works (6-step sequence), CUET Sections, CBT Exam Preview, Performance Insights, FAQ Accordion, Final CTA, and Footer.
+  - Features Deep-Dive (`/features`): 6 comprehensive feature modules with NTA alignment details.
+  - CUET Subjects & Syllabus (`/cuet-subjects`): Full breakdown of Section IA/IB Languages, Section II Domains, and Section III General Test with +5 / -1 marking scheme.
+  - Transparent Pricing (`/pricing`): Freemium model (Free Diagnostic, Pro Aspirant Pass, Subject Test Packs).
+  - About MockMate (`/about`): Academic mission, CUET-only focus, and examination integrity principles.
+  - Support & Contact (`/contact`): Inquiry form with client-side validation and demonstration status banner.
+  - Legal & Auth Placeholders: `/privacy`, `/terms`, `/login`, `/register`.
+  - SEO Foundations: Dynamic `sitemap.xml` and `robots.txt`.
+  - 10/10 Vitest tests passing; ESLint, TypeScript strict checking, and Turbopack production builds passing with 0 errors.
+- **Next Milestone:** **Phase 4: Authentication & Onboarding** (Awaiting approval).
