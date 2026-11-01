@@ -36,6 +36,13 @@ model User {
   accounts       Account[]
   studentProfile StudentProfile?
 
+  questionsCreated Question[]       @relation("QuestionCreatedBy")
+  questionsUpdated Question[]       @relation("QuestionUpdatedBy")
+  questionReviews  QuestionReview[]
+
+  mockTestsCreated MockTest[]       @relation("MockTestCreatedBy")
+  mockTestsUpdated MockTest[]       @relation("MockTestUpdatedBy")
+
   @@map("user")
 }
 
@@ -157,6 +164,8 @@ model ExamYear {
 
   syllabusVersions SyllabusVersion[]
   studentSubjects  StudentSubject[]
+  questions        Question[]
+  mockTests        MockTest[]
 
   @@map("exam_year")
 }
@@ -191,6 +200,9 @@ model Subject {
 
   syllabusVersions SyllabusVersion[]
   studentSubjects  StudentSubject[]
+  questions        Question[]
+  questionPassages QuestionPassage[]
+  mockTestSections MockTestSection[]
 
   @@index([categoryId])
   @@index([code])
@@ -213,7 +225,8 @@ model SyllabusVersion {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  units SyllabusUnit[]
+  units     SyllabusUnit[]
+  questions Question[]
 
   @@unique([subjectId, examYearId, version])
   @@index([subjectId])
@@ -233,7 +246,8 @@ model SyllabusUnit {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
 
-  topics SyllabusTopic[]
+  topics    SyllabusTopic[]
+  questions Question[]
 
   @@index([syllabusVersionId])
   @@map("syllabus_unit")
@@ -250,6 +264,7 @@ model SyllabusTopic {
   updatedAt   DateTime     @updatedAt
 
   subtopics SyllabusSubtopic[]
+  questions Question[]
 
   @@index([unitId])
   @@map("syllabus_topic")
@@ -264,6 +279,8 @@ model SyllabusSubtopic {
   order       Int           @default(0)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+
+  questions   Question[]
 
   @@index([topicId])
   @@map("syllabus_subtopic")
@@ -284,4 +301,202 @@ model StudentSubject {
   @@index([subjectId])
   @@index([examYearId])
   @@map("student_subject")
+}
+
+// -----------------------------------------------------------------------------
+// Phase 7: CUET Question Bank Management Models
+// -----------------------------------------------------------------------------
+
+model QuestionPassage {
+  id          String     @id @default(cuid())
+  title       String
+  passageText String     @db.Text
+  subjectId   String?
+  subject     Subject?   @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  questions   Question[]
+
+  @@index([subjectId])
+  @@map("question_passage")
+}
+
+model Question {
+  id                String             @id @default(cuid())
+  questionCode      String             @unique // e.g. "Q-PHY-2026-001"
+  examYearId        String
+  examYear          ExamYear           @relation(fields: [examYearId], references: [id], onDelete: Restrict)
+  subjectId         String
+  subject           Subject            @relation(fields: [subjectId], references: [id], onDelete: Restrict)
+  syllabusVersionId String?
+  syllabusVersion   SyllabusVersion?   @relation(fields: [syllabusVersionId], references: [id], onDelete: SetNull)
+  unitId            String?
+  unit              SyllabusUnit?      @relation(fields: [unitId], references: [id], onDelete: SetNull)
+  topicId           String?
+  topic             SyllabusTopic?     @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  subtopicId        String?
+  subtopic          SyllabusSubtopic?  @relation(fields: [subtopicId], references: [id], onDelete: SetNull)
+  passageId         String?
+  passage           QuestionPassage?   @relation(fields: [passageId], references: [id], onDelete: SetNull)
+  questionType      String             @default("MCQ_SINGLE") // MCQ_SINGLE, MCQ_MULTIPLE, ASSERTION_REASON, PASSAGE_BASED, TRUE_FALSE
+  questionText      String             @db.Text
+  difficulty        String             @default("MEDIUM") // EASY, MEDIUM, HARD
+  explanation       String?            @db.Text
+  marks             Float              @default(5.0) // NTA CUET standard is +5
+  negativeMarks     Float              @default(1.0) // NTA CUET standard is -1
+  status            String             @default("DRAFT") // DRAFT, IN_REVIEW, APPROVED, PUBLISHED, REJECTED, ARCHIVED
+  usageCount        Int                @default(0) // Tracks usage in tests/attempts to prevent destructive edits
+  createdById       String?
+  createdBy         User?              @relation("QuestionCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  updatedById       String?
+  updatedBy         User?              @relation("QuestionUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+  publishedAt       DateTime?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  options           QuestionOption[]
+  reviews           QuestionReview[]
+  tags              QuestionTagRelation[]
+  mockTestQuestions MockTestQuestion[]
+
+  @@index([subjectId])
+  @@index([examYearId])
+  @@index([status])
+  @@index([difficulty])
+  @@index([questionType])
+  @@map("question")
+}
+
+model QuestionOption {
+  id          String   @id @default(cuid())
+  questionId  String
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  optionLabel String   // "A", "B", "C", "D"
+  optionText  String   @db.Text
+  isCorrect   Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([questionId])
+  @@map("question_option")
+}
+
+model QuestionTag {
+  id        String                @id @default(cuid())
+  name      String                @unique // e.g. "NCERT Exemplar", "PYQ 2024", "High Yield"
+  slug      String                @unique
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt
+
+  questions QuestionTagRelation[]
+
+  @@map("question_tag")
+}
+
+model QuestionTagRelation {
+  questionId String
+  question   Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  tagId      String
+  tag        QuestionTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([questionId, tagId])
+  @@index([questionId])
+  @@index([tagId])
+  @@map("question_tag_relation")
+}
+
+model QuestionReview {
+  id           String    @id @default(cuid())
+  questionId   String
+  question     Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  reviewerId   String?
+  reviewer     User?     @relation(fields: [reviewerId], references: [id], onDelete: SetNull)
+  reviewStatus String    // APPROVED, REJECTED, CHANGES_REQUESTED
+  feedback     String?   @db.Text
+  reviewedAt   DateTime  @default(now())
+
+  @@index([questionId])
+  @@map("question_review")
+}
+
+// -----------------------------------------------------------------------------
+// Phase 8: Mock Test Library & Test Builder Models
+// -----------------------------------------------------------------------------
+
+model MockTest {
+  id                String            @id @default(cuid())
+  title             String            // e.g. "CUET UG Physics Full Mock Test 01"
+  slug              String            @unique // e.g. "cuet-ug-physics-mock-01"
+  testCode          String            @unique // e.g. "MT-CUET-PHY-2026-01"
+  description       String?           @db.Text
+  examYearId        String
+  examYear          ExamYear          @relation(fields: [examYearId], references: [id], onDelete: Restrict)
+  testType          String            @default("SUBJECT_WISE") // FULL_LENGTH, SUBJECT_WISE, GENERAL_TEST, SECTIONAL, CUSTOM_PRACTICE
+  status            String            @default("DRAFT") // DRAFT, IN_REVIEW, PUBLISHED, ARCHIVED
+  difficulty        String            @default("MEDIUM") // EASY, MEDIUM, HARD
+  instructions      String?           @db.Text
+  totalDuration     Int               @default(45) // In minutes (e.g. 45 or 60)
+  totalMarks        Float             @default(200.0) // e.g. 40 * 5 = 200
+  totalQuestions    Int               @default(50) // Total questions in test (e.g. 50 with 40 to attempt)
+  isOfficialPattern Boolean           @default(false)
+  attemptsCount     Int               @default(0) // Safeguard against editing tests with existing student attempts
+  createdById       String?
+  createdBy         User?             @relation("MockTestCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  updatedById       String?
+  updatedBy         User?             @relation("MockTestUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+  publishedAt       DateTime?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  sections          MockTestSection[]
+
+  @@index([examYearId])
+  @@index([status])
+  @@index([testType])
+  @@index([difficulty])
+  @@map("mock_test")
+}
+
+model MockTestSection {
+  id                 String             @id @default(cuid())
+  mockTestId         String
+  mockTest           MockTest           @relation(fields: [mockTestId], references: [id], onDelete: Cascade)
+  title              String             // e.g. "Section A: Compulsory Core"
+  subjectId          String
+  subject            Subject            @relation(fields: [subjectId], references: [id], onDelete: Restrict)
+  sectionType        String             @default("COMPULSORY") // COMPULSORY, OPTIONAL
+  description        String?
+  order              Int                @default(1)
+  duration           Int?               // Optional section-specific duration in minutes
+  totalMarks         Float              @default(200.0)
+  totalQuestions     Int                @default(50)
+  questionsToAttempt Int                @default(40) // NTA pattern allows 40 out of 50
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  questions          MockTestQuestion[]
+
+  @@index([mockTestId])
+  @@index([subjectId])
+  @@map("mock_test_section")
+}
+
+model MockTestQuestion {
+  id             String          @id @default(cuid())
+  sectionId      String
+  section        MockTestSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  questionId     String
+  question       Question        @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  questionNumber Int             // Sequential display number (1, 2, 3...)
+  marks          Float           @default(5.0)
+  negativeMarks  Float           @default(1.0)
+  order          Int             @default(1)
+  createdAt      DateTime        @default(now())
+
+  @@unique([sectionId, questionId])
+  @@index([sectionId])
+  @@index([questionId])
+  @@map("mock_test_question")
 }

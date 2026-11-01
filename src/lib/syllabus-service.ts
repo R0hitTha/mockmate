@@ -245,7 +245,7 @@ export async function getSubjects(options: {
   categorySlug?: string;
   search?: string;
   studentProfileId?: string;
-}): Promise<SubjectListItem[]> {
+} = {}): Promise<SubjectListItem[]> {
   const targetYear = options.year || 2026;
   const enrolledSubjectIds = new Set<string>();
 

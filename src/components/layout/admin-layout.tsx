@@ -72,7 +72,9 @@ export function AdminLayout({
 
   const adminNav = [
     { label: "Admin Overview", icon: Shield, href: "/admin", badge: null },
-    { label: "Question Bank", icon: FileQuestion, href: "/admin/question-bank", badge: "Active" },
+    { label: "Mock Test Library", icon: BookOpen, href: "/admin/mock-tests", badge: "Active" },
+    { label: "Build Mock Test", icon: Database, href: "/admin/mock-tests/new", badge: null },
+    { label: "Question Bank", icon: FileQuestion, href: "/admin/question-bank", badge: null },
     { label: "Create Question", icon: Database, href: "/admin/question-bank/new", badge: null },
     { label: "Bulk CSV Import", icon: UploadCloud, href: "/admin/question-bank/import", badge: null },
     { label: "CUET Syllabus", icon: BookOpen, href: "/subjects", badge: null },

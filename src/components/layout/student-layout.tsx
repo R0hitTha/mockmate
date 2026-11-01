@@ -103,11 +103,11 @@ export function StudentLayout({
       badge: null,
     },
     {
-      href: "/tests",
+      href: "/mock-tests",
       label: "Mock Tests",
       icon: FileCheck2,
-      status: "phase-7",
-      badge: "Phase 7",
+      status: "active",
+      badge: null,
     },
     {
       href: "/practice",
