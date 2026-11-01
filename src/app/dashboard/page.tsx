@@ -5,12 +5,14 @@ import { Container } from "@/components/layout/container";
 import { getServerSession, getStudentProfile } from "@/lib/auth-server";
 import { getStudentResults } from "@/lib/evaluation-service";
 import { getStudentDashboardAnalytics } from "@/lib/analytics-service";
+import { getStudentDashboardMistakeSummary } from "@/lib/mistake-service";
 import { WelcomeBanner } from "@/components/dashboard/welcome-banner";
 import { OverviewMetrics } from "@/components/dashboard/overview-metrics";
 import { ContinuePreparationCard } from "@/components/dashboard/continue-preparation-card";
 import { MySubjectsSection } from "@/components/dashboard/my-subjects-section";
 import { RecentActivitySection } from "@/components/dashboard/recent-activity-section";
 import { PerformanceSnapshotSection } from "@/components/dashboard/performance-snapshot-section";
+import { DashboardMistakeCard } from "@/components/mistakes/dashboard-mistake-card";
 import { PreparationRecommendations } from "@/components/dashboard/preparation-recommendations";
 import { UpcomingDeadlines } from "@/components/dashboard/upcoming-deadlines";
 
@@ -76,6 +78,7 @@ export default async function DashboardPage() {
   }));
 
   const dashboardAnalytics = await getStudentDashboardAnalytics(session.user.id);
+  const mistakeSummary = await getStudentDashboardMistakeSummary(session.user.id);
 
   return (
     <StudentLayout
@@ -162,6 +165,15 @@ export default async function DashboardPage() {
 
               {/* Sidebar Column (1 span on desktop) */}
               <div className="space-y-8">
+                {/* Section: Mistake Intelligence */}
+                <DashboardMistakeCard
+                  pendingReviewCount={mistakeSummary.pendingReviewCount}
+                  totalIncorrect={mistakeSummary.totalIncorrect}
+                  recurringErrorTopicsCount={mistakeSummary.recurringErrorTopicsCount}
+                  topStruggleTopic={mistakeSummary.topStruggleTopic}
+                  hasMistakes={mistakeSummary.hasMistakes}
+                />
+
                 {/* Section 7: Preparation Recommendations */}
                 <PreparationRecommendations
                   targetExamYear={targetYear}

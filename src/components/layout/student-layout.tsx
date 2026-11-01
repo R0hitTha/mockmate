@@ -19,6 +19,7 @@ import {
   ChevronRight,
   Shield,
   Award,
+  AlertCircle,
 } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -132,18 +133,25 @@ export function StudentLayout({
       badge: null,
     },
     {
+      href: "/mistakes",
+      label: "Mistake Intelligence",
+      icon: AlertCircle,
+      status: "active",
+      badge: null,
+    },
+    {
       href: "/planner",
       label: "Study Planner",
       icon: CalendarDays,
-      status: "phase-11",
-      badge: "Phase 11",
+      status: "phase-13",
+      badge: "Phase 13",
     },
     {
       href: "/bookmarks",
       label: "Bookmarks",
       icon: Bookmark,
-      status: "phase-12",
-      badge: "Phase 12",
+      status: "active",
+      badge: null,
     },
     {
       href: "/profile",

@@ -44,6 +44,8 @@ model User {
   mockTestsUpdated MockTest[]       @relation("MockTestUpdatedBy")
   testAttempts     TestAttempt[]
   testResults      TestResult[]
+  mistakeReviews   MistakeReview[]
+  bookmarks        QuestionBookmark[]
 
   @@map("user")
 }
@@ -362,6 +364,8 @@ model Question {
   tags              QuestionTagRelation[]
   mockTestQuestions MockTestQuestion[]
   attemptAnswers    AttemptAnswer[]
+  mistakeReviews    MistakeReview[]
+  bookmarks         QuestionBookmark[]
 
   @@index([subjectId])
   @@index([examYearId])
@@ -529,6 +533,7 @@ model TestAttempt {
   answers        AttemptAnswer[]
   events         AttemptEvent[]
   result         TestResult?
+  mistakeReviews MistakeReview[]
 
   @@index([studentId])
   @@index([mockTestId])
@@ -665,4 +670,49 @@ model TestResultQuestion {
   @@index([questionId])
   @@index([status])
   @@map("test_result_question")
+}
+
+// -----------------------------------------------------------------------------
+// Phase 12: Mistake Intelligence & Question Bookmarks
+// -----------------------------------------------------------------------------
+
+model MistakeReview {
+  id               String      @id @default(cuid())
+  studentId        String
+  student          User        @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  attemptId        String
+  attempt          TestAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId       String
+  question         Question    @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  resultQuestionId String?
+  status           String      @default("PENDING_REVIEW") // PENDING_REVIEW, REVIEWED, MASTERED
+  errorReason      String?     // CARELESS, CONCEPT_GAP, MISREAD_QUESTION, TIME_PRESSURE, CALCULATION_ERROR
+  notes            String?     @db.Text
+  reviewedAt       DateTime?
+  masteredAt       DateTime?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  @@unique([studentId, attemptId, questionId])
+  @@index([studentId])
+  @@index([status])
+  @@index([questionId])
+  @@index([attemptId])
+  @@map("mistake_review")
+}
+
+model QuestionBookmark {
+  id         String   @id @default(cuid())
+  studentId  String
+  student    User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  notes      String?  @db.Text
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([studentId, questionId])
+  @@index([studentId])
+  @@index([questionId])
+  @@map("question_bookmark")
 }
