@@ -34,7 +34,7 @@ export function CBTQuestionContainer({
     >
       {/* CBT Question Meta Header */}
       <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-3.5 border-b border-border bg-muted/40">
-        <div className="flex items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2.5">
           <span className="text-xs font-bold text-foreground">
             Question {questionNumber} {totalQuestions && `of ${totalQuestions}`}
           </span>

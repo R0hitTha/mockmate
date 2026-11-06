@@ -50,11 +50,11 @@ export function PublicLayout({ children }: PublicLayoutProps) {
 
       {/* Main Header Navigation */}
       <header className="sticky top-0 z-40 w-full border-b border-border bg-surface/90 backdrop-blur-md">
-        <Container size="lg" className="h-16 flex items-center justify-between">
+        <Container size="lg" className="h-16 flex items-center justify-between gap-4">
           <Logo size="default" href="/" showTagline />
 
           {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center space-x-7 text-xs font-semibold tracking-wide uppercase">
+          <nav className="hidden xl:flex items-center space-x-6 text-xs font-semibold tracking-wide uppercase shrink-0">
             {navLinks.map((item) => {
               const isActive =
                 item.href === "/" ? pathname === "/" : pathname?.startsWith(item.href);
@@ -64,7 +64,7 @@ export function PublicLayout({ children }: PublicLayoutProps) {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "transition-colors hover:text-primary dark:hover:text-blue-400 py-1 border-b-2",
+                    "transition-colors hover:text-primary dark:hover:text-blue-400 py-1 border-b-2 leading-snug",
                     isActive
                       ? "text-primary dark:text-blue-400 border-primary dark:border-blue-400"
                       : "text-muted-foreground border-transparent"
@@ -77,19 +77,19 @@ export function PublicLayout({ children }: PublicLayoutProps) {
           </nav>
 
           {/* Actions & Theme Toggle */}
-          <div className="flex items-center space-x-2.5 sm:space-x-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <ThemeToggle />
 
             <Button
               variant="ghost"
               size="sm"
               asChild
-              className="text-xs font-semibold text-foreground hover:text-primary"
+              className="hidden sm:inline-flex text-xs font-semibold text-foreground hover:text-primary px-3"
             >
               <Link href="/login">Sign In</Link>
             </Button>
 
-            <Button size="sm" asChild className="text-xs font-semibold">
+            <Button size="sm" asChild className="hidden sm:inline-flex text-xs font-semibold px-3.5">
               <Link href="/register">Start Preparing</Link>
             </Button>
 
@@ -97,7 +97,7 @@ export function PublicLayout({ children }: PublicLayoutProps) {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg border border-border text-foreground hover:bg-muted focus:outline-hidden"
+              className="xl:hidden p-2 rounded-lg border border-border text-foreground hover:bg-muted focus:outline-hidden shrink-0 cursor-pointer"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -107,7 +107,7 @@ export function PublicLayout({ children }: PublicLayoutProps) {
 
         {/* Mobile Navigation Dropdown */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-b border-border bg-surface px-4 py-5 shadow-lg animate-in slide-in-from-top-2">
+          <div className="xl:hidden border-b border-border bg-surface px-4 py-5 shadow-lg animate-in slide-in-from-top-2">
             <nav className="flex flex-col space-y-3">
               {navLinks.map((item) => (
                 <Link

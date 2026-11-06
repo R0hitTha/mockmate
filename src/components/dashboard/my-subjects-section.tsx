@@ -70,14 +70,14 @@ export function MySubjectsSection({ subjects, targetExamYear }: MySubjectsSectio
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 className="text-sm font-bold text-foreground">My Enrolled Subjects</h2>
           <p className="text-xs text-muted-foreground mt-0.5">
             Configured for your CUET UG {targetExamYear} examination curriculum
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button variant="outline" size="sm" asChild className="text-xs">
             <Link href="/subjects" className="flex items-center gap-1.5">
               <span>View Syllabus</span>

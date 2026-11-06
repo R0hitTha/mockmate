@@ -134,7 +134,7 @@ export function TodayTasksSection({
           <p className="text-xs text-muted mt-1 max-w-sm">
             Today is either your configured rest day or you have completed all sessions. Enjoy your rest or add a custom drill.
           </p>
-          <div className="mt-4 flex gap-3">
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
             <Link href="/study-planner/weekly">
               <Button size="sm" variant="outline">
                 Open Weekly Schedule

@@ -37,17 +37,17 @@ export function Logo({
       >
         M
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col justify-center">
         <span
           className={cn(
-            "text-slate-900 dark:text-white leading-none font-bold",
+            "text-foreground leading-snug font-bold tracking-tight",
             textSizes[size]
           )}
         >
           Mock<span className="text-primary dark:text-blue-400">Mate</span>
         </span>
         {showTagline && (
-          <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500 dark:text-slate-400 mt-0.5">
+          <span className="text-[10px] uppercase font-semibold tracking-wider text-muted-foreground leading-normal mt-0.5">
             CUET UG Exam Prep
           </span>
         )}

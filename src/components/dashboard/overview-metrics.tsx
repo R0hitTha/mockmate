@@ -62,7 +62,7 @@ export function OverviewMetrics({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
         <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
           Preparation Overview
         </h2>
@@ -81,7 +81,7 @@ export function OverviewMetrics({
               className="border-border shadow-2xs hover:border-border/80 transition-colors"
             >
               <CardContent className="p-5 space-y-3">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                   <div
                     className={`w-10 h-10 rounded-xl flex items-center justify-center ${m.iconColor}`}
                   >

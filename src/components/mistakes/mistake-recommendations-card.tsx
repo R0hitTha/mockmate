@@ -31,7 +31,7 @@ export function MistakeRecommendationsCard({
   return (
     <Card className="border border-border">
       <CardHeader className="pb-3 border-b border-border/60">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
           <CardTitle className="text-base font-semibold text-foreground flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-primary" />
             <span>Targeted Revision Guidance</span>
@@ -50,7 +50,7 @@ export function MistakeRecommendationsCard({
               className="p-4 rounded-lg border border-border/70 bg-card hover:border-primary/40 transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between mb-1.5">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
                   <h4 className="text-xs font-semibold text-foreground">{rec.title}</h4>
                   {getPriorityBadge(rec.priority)}
                 </div>

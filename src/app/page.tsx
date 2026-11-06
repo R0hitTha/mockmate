@@ -131,7 +131,7 @@ export default function HomePage() {
                   marksNegative={1}
                   questionText="If A and B are two symmetric matrices of the same order, then the matrix (AB - BA) is always which of the following?"
                   actionBar={
-                    <div className="flex items-center justify-between w-full">
+                    <div className="flex flex-wrap items-center justify-between gap-2 w-full">
                       <Button variant="cbt" size="sm">
                         Clear Response
                       </Button>

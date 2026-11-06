@@ -95,7 +95,7 @@ export default async function MistakeReviewPage({ searchParams }: ReviewPageProp
 
             {/* Pagination Controls */}
             {listData.totalPages > 1 && (
-              <div className="flex items-center justify-between pt-4 border-t border-border/60">
+              <div className="flex flex-wrap items-center justify-between gap-2.5 pt-4 border-t border-border/60">
                 <span className="text-xs text-muted-foreground">
                   Page {listData.page} of {listData.totalPages} ({listData.total} total items)
                 </span>

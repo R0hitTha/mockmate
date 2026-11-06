@@ -122,7 +122,7 @@ export function StudyPlannerClientView({
 
           {/* Upcoming Tasks Section */}
           <div className="bg-surface rounded-xl border border-border p-6 shadow-xs">
-            <div className="flex items-center justify-between pb-3 border-b border-border">
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-border">
               <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
                 <Clock className="w-4 h-4 text-primary" /> Upcoming Sessions This Week
               </h2>

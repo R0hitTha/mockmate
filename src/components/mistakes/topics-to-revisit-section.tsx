@@ -51,7 +51,7 @@ export function TopicsToRevisitSection({ topics }: TopicsToRevisitSectionProps) 
   return (
     <Card className="border border-border">
       <CardHeader className="pb-3 border-b border-border/60">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <CardTitle className="text-base font-semibold text-foreground flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-amber-600" />
             <span>Topics Requiring Focused Revision</span>
@@ -78,7 +78,7 @@ export function TopicsToRevisitSection({ topics }: TopicsToRevisitSectionProps) 
                   {getStatusBadge(t.status)}
                 </div>
                 <p className="text-xs text-muted-foreground">{t.reason}</p>
-                <div className="flex items-center gap-4 text-[11px] text-muted-foreground pt-0.5">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-muted-foreground pt-0.5">
                   <span>
                     Attempted: <strong className="text-foreground">{t.attemptedCount}</strong>
                   </span>

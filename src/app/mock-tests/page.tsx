@@ -231,7 +231,7 @@ export default async function StudentMockTestsPage({
                   </div>
 
                   {/* Card Action */}
-                  <div className="pt-4 mt-4 border-t border-border flex items-center justify-between">
+                  <div className="pt-4 mt-4 border-t border-border flex flex-wrap items-center justify-between gap-2">
                     <span className="text-[11px] text-muted-foreground flex items-center gap-1">
                       <ShieldCheck className="w-3.5 h-3.5 text-primary" />
                       +5 / -1 Marking

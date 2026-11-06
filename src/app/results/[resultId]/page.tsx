@@ -86,7 +86,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
         <Container size="default">
           <div className="space-y-8">
             {/* Top Navigation Bar */}
-            <div className="flex items-center justify-between print:hidden">
+            <div className="flex flex-wrap items-center justify-between gap-2.5 print:hidden">
               <Link href="/results">
                 <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground">
                   <ArrowLeft className="w-3.5 h-3.5 mr-1.5" />

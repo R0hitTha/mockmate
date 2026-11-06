@@ -142,17 +142,17 @@ function LoginForm() {
           <p className="text-xs text-blue-800/80 dark:text-blue-300/80 leading-relaxed">
             Explore MockMate immediately with pre-loaded test attempts and sample candidate records:
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div className="flex flex-col sm:flex-row gap-2.5">
             <Button
               type="button"
               variant="outline"
               size="sm"
               disabled={isSubmitting}
               onClick={() => handleQuickDemoLogin("STUDENT")}
-              className="w-full text-xs font-semibold bg-white dark:bg-slate-900 border-blue-300 dark:border-blue-800 text-blue-950 dark:text-blue-100 hover:bg-blue-100 dark:hover:bg-blue-900/60 h-9 justify-center cursor-pointer shadow-xs"
+              className="w-full text-xs font-semibold bg-white dark:bg-slate-900 border-blue-300 dark:border-blue-800 text-blue-950 dark:text-blue-100 hover:bg-blue-100 dark:hover:bg-blue-900/60 min-h-10 py-2 px-3 justify-center cursor-pointer shadow-xs"
             >
-              <UserCheck className="w-3.5 h-3.5 mr-1 text-blue-600 dark:text-blue-400" />
-              Sign In as Student
+              <UserCheck className="w-3.5 h-3.5 mr-1 text-blue-600 dark:text-blue-400 shrink-0" />
+              <span>Sign In as Student</span>
             </Button>
             <Button
               type="button"
@@ -160,10 +160,10 @@ function LoginForm() {
               size="sm"
               disabled={isSubmitting}
               onClick={() => handleQuickDemoLogin("ADMIN")}
-              className="w-full text-xs font-semibold bg-white dark:bg-slate-900 border-blue-300 dark:border-blue-800 text-blue-950 dark:text-blue-100 hover:bg-blue-100 dark:hover:bg-blue-900/60 h-9 justify-center cursor-pointer shadow-xs"
+              className="w-full text-xs font-semibold bg-white dark:bg-slate-900 border-blue-300 dark:border-blue-800 text-blue-950 dark:text-blue-100 hover:bg-blue-100 dark:hover:bg-blue-900/60 min-h-10 py-2 px-3 justify-center cursor-pointer shadow-xs"
             >
-              <Shield className="w-3.5 h-3.5 mr-1 text-blue-600 dark:text-blue-400" />
-              Sign In as Admin
+              <Shield className="w-3.5 h-3.5 mr-1 text-blue-600 dark:text-blue-400 shrink-0" />
+              <span>Sign In as Admin</span>
             </Button>
           </div>
         </div>
@@ -271,27 +271,27 @@ function LoginForm() {
             <ArrowRight className="w-4 h-4 ml-1.5" />
           </Button>
 
-          <div className="pt-2 border-t border-border flex items-center justify-between text-[11px] text-muted-foreground">
-            <span>Pre-fill fields:</span>
-            <div className="flex gap-2">
+          <div className="pt-2.5 border-t border-border flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+            <span className="font-medium">Quick pre-fill:</span>
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 onClick={() => {
                   setValue("email", "student@mockmate.in");
                   setValue("password", "Password123!");
                 }}
-                className="text-primary hover:underline font-medium cursor-pointer"
+                className="text-primary hover:underline font-semibold cursor-pointer px-1 py-0.5 rounded transition-colors hover:bg-primary/10"
               >
                 Student Creds
               </button>
-              <span>•</span>
+              <span className="text-muted-foreground/50">•</span>
               <button
                 type="button"
                 onClick={() => {
                   setValue("email", "admin@mockmate.in");
                   setValue("password", "Password123!");
                 }}
-                className="text-primary hover:underline font-medium cursor-pointer"
+                className="text-primary hover:underline font-semibold cursor-pointer px-1 py-0.5 rounded transition-colors hover:bg-primary/10"
               >
                 Admin Creds
               </button>

@@ -571,7 +571,7 @@ export function CBTExamInterface({ payload }: CBTExamInterfaceProps) {
             <div className="flex-1 flex flex-col justify-between space-y-6">
               {/* Question Header Bar */}
               <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-border">
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="text-sm font-bold text-foreground">
                     Question {activeQuestionIndex + 1}
                   </span>
@@ -643,8 +643,8 @@ export function CBTExamInterface({ payload }: CBTExamInterfaceProps) {
               </div>
 
               {/* Action Buttons Bar */}
-              <div className="pt-6 border-t border-border flex flex-wrap items-center justify-between gap-2.5">
-                <div className="flex items-center gap-2">
+              <div className="pt-6 border-t border-border flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center gap-2">
                   <Button
                     variant="outline"
                     size="sm"
@@ -667,7 +667,7 @@ export function CBTExamInterface({ payload }: CBTExamInterfaceProps) {
                   </Button>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <Button
                     variant="outline"
                     size="sm"
