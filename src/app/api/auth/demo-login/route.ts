@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { DEMO_STUDENT_USER, DEMO_ADMIN_USER, saveDemoSession } from "@/lib/auth-server";
+import {
+  DEMO_STUDENT_USER,
+  DEMO_ADMIN_USER,
+  saveDemoSession,
+  STATIC_BASE_DATE,
+  STATIC_EXPIRY_DATE,
+} from "@/lib/auth-server";
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,15 +20,15 @@ export async function POST(request: NextRequest) {
     };
 
     const token = isAdmin ? "demo-admin-token" : "demo-student-token";
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    const expiresAt = STATIC_EXPIRY_DATE;
 
     const session = {
       id: token,
       userId: user.id,
       token,
       expiresAt,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: STATIC_BASE_DATE,
+      updatedAt: STATIC_BASE_DATE,
     };
 
     saveDemoSession(token, { user, session });

@@ -4,6 +4,9 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { normalizeIndianPhoneNumber } from "@/lib/phone";
 
+export const STATIC_BASE_DATE = new Date("2026-01-01T00:00:00.000Z");
+export const STATIC_EXPIRY_DATE = new Date("2030-01-01T00:00:00.000Z");
+
 export const DEMO_STUDENT_USER = {
   id: "usr_student_alice_01",
   name: "Aryan Sharma",
@@ -11,8 +14,8 @@ export const DEMO_STUDENT_USER = {
   emailVerified: true,
   image: null,
   role: "STUDENT",
-  createdAt: new Date("2026-01-01"),
-  updatedAt: new Date(),
+  createdAt: STATIC_BASE_DATE,
+  updatedAt: STATIC_BASE_DATE,
 };
 
 export const DEMO_ADMIN_USER = {
@@ -22,8 +25,8 @@ export const DEMO_ADMIN_USER = {
   emailVerified: true,
   image: null,
   role: "ADMIN",
-  createdAt: new Date("2026-01-01"),
-  updatedAt: new Date(),
+  createdAt: STATIC_BASE_DATE,
+  updatedAt: STATIC_BASE_DATE,
 };
 
 export const demoSessions = new Map<
@@ -104,9 +107,9 @@ export async function getServerSession() {
         id: token,
         userId: user.id,
         token,
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        expiresAt: STATIC_EXPIRY_DATE,
+        createdAt: STATIC_BASE_DATE,
+        updatedAt: STATIC_BASE_DATE,
       };
 
       return {
@@ -239,18 +242,18 @@ export async function getStudentProfile(userId: string) {
     phoneVerified: true,
     currentStep: 5,
     onboardingCompleted: true,
-    createdAt: new Date("2026-01-01"),
-    updatedAt: new Date(),
+    createdAt: STATIC_BASE_DATE,
+    updatedAt: STATIC_BASE_DATE,
     subjectPreferences: [
-      { id: "pref_1", studentProfileId: `prof_${userId}`, subjectCode: "PHYSICS", subjectName: "Physics", category: "DOMAIN_SPECIFIC", createdAt: new Date("2026-01-01"), updatedAt: new Date() },
-      { id: "pref_2", studentProfileId: `prof_${userId}`, subjectCode: "CHEMISTRY", subjectName: "Chemistry", category: "DOMAIN_SPECIFIC", createdAt: new Date("2026-01-01"), updatedAt: new Date() },
-      { id: "pref_3", studentProfileId: `prof_${userId}`, subjectCode: "MATHEMATICS", subjectName: "Mathematics", category: "DOMAIN_SPECIFIC", createdAt: new Date("2026-01-01"), updatedAt: new Date() },
-      { id: "pref_4", studentProfileId: `prof_${userId}`, subjectCode: "ENGLISH", subjectName: "English", category: "LANGUAGE", createdAt: new Date("2026-01-01"), updatedAt: new Date() },
-      { id: "pref_5", studentProfileId: `prof_${userId}`, subjectCode: "GENERAL_TEST", subjectName: "General Test", category: "GENERAL_TEST", createdAt: new Date("2026-01-01"), updatedAt: new Date() },
+      { id: "pref_1", studentProfileId: `prof_${userId}`, subjectCode: "PHYSICS", subjectName: "Physics", category: "DOMAIN_SPECIFIC", createdAt: STATIC_BASE_DATE, updatedAt: STATIC_BASE_DATE },
+      { id: "pref_2", studentProfileId: `prof_${userId}`, subjectCode: "CHEMISTRY", subjectName: "Chemistry", category: "DOMAIN_SPECIFIC", createdAt: STATIC_BASE_DATE, updatedAt: STATIC_BASE_DATE },
+      { id: "pref_3", studentProfileId: `prof_${userId}`, subjectCode: "MATHEMATICS", subjectName: "Mathematics", category: "DOMAIN_SPECIFIC", createdAt: STATIC_BASE_DATE, updatedAt: STATIC_BASE_DATE },
+      { id: "pref_4", studentProfileId: `prof_${userId}`, subjectCode: "ENGLISH", subjectName: "English", category: "LANGUAGE", createdAt: STATIC_BASE_DATE, updatedAt: STATIC_BASE_DATE },
+      { id: "pref_5", studentProfileId: `prof_${userId}`, subjectCode: "GENERAL_TEST", subjectName: "General Test", category: "GENERAL_TEST", createdAt: STATIC_BASE_DATE, updatedAt: STATIC_BASE_DATE },
     ],
     universityPreferences: [
-      { id: "univ_1", studentProfileId: `prof_${userId}`, universityCode: "DU", universityName: "University of Delhi (DU)", createdAt: new Date("2026-01-01"), updatedAt: new Date() },
-      { id: "univ_2", studentProfileId: `prof_${userId}`, universityCode: "BHU", universityName: "Banaras Hindu University (BHU)", createdAt: new Date("2026-01-01"), updatedAt: new Date() },
+      { id: "univ_1", studentProfileId: `prof_${userId}`, universityCode: "DU", universityName: "University of Delhi (DU)", createdAt: STATIC_BASE_DATE, updatedAt: STATIC_BASE_DATE },
+      { id: "univ_2", studentProfileId: `prof_${userId}`, universityCode: "BHU", universityName: "Banaras Hindu University (BHU)", createdAt: STATIC_BASE_DATE, updatedAt: STATIC_BASE_DATE },
     ],
     user: {
       id: userId,

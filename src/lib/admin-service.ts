@@ -454,7 +454,7 @@ export async function getAdminStudents(filters: StudentFilterInput): Promise<{
       enrolledSubjectCount: 4,
       completedTestsCount: 6,
       subscriptionPlanName: "Pro Aspirant Pass",
-      createdAt: new Date(Date.now() - 30 * 86400000).toISOString(),
+      createdAt: "2026-02-01T10:00:00.000Z",
     },
     {
       id: "student-102",
@@ -469,7 +469,7 @@ export async function getAdminStudents(filters: StudentFilterInput): Promise<{
       enrolledSubjectCount: 5,
       completedTestsCount: 3,
       subscriptionPlanName: "Free Diagnostic",
-      createdAt: new Date(Date.now() - 20 * 86400000).toISOString(),
+      createdAt: "2026-02-10T10:00:00.000Z",
     },
     {
       id: "student-103",
@@ -485,7 +485,7 @@ export async function getAdminStudents(filters: StudentFilterInput): Promise<{
       enrolledSubjectCount: 3,
       completedTestsCount: 1,
       subscriptionPlanName: "Free Diagnostic",
-      createdAt: new Date(Date.now() - 10 * 86400000).toISOString(),
+      createdAt: "2026-02-20T10:00:00.000Z",
     },
   ];
 
@@ -894,7 +894,7 @@ export async function getAITelemetryStats(): Promise<AITelemetryStats> {
         queryPreview: "Explain why electrostatic field lines never form closed loops?",
         tokensUsed: 420,
         latencyMs: 780,
-        timestamp: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
+        timestamp: "2026-03-01T11:55:00.000Z",
       },
       {
         id: "ai-q-2",
@@ -903,7 +903,7 @@ export async function getAITelemetryStats(): Promise<AITelemetryStats> {
         queryPreview: "How does the common ion effect shift equilibrium in acetic acid?",
         tokensUsed: 512,
         latencyMs: 920,
-        timestamp: new Date(Date.now() - 18 * 60 * 1000).toISOString(),
+        timestamp: "2026-03-01T11:42:00.000Z",
       },
       {
         id: "ai-q-3",
@@ -912,7 +912,7 @@ export async function getAITelemetryStats(): Promise<AITelemetryStats> {
         queryPreview: "Step-by-step evaluation of definite integral of sin^2(x) from 0 to pi",
         tokensUsed: 640,
         latencyMs: 1140,
-        timestamp: new Date(Date.now() - 42 * 60 * 1000).toISOString(),
+        timestamp: "2026-03-01T11:18:00.000Z",
       },
       {
         id: "ai-q-4",
@@ -921,7 +921,7 @@ export async function getAITelemetryStats(): Promise<AITelemetryStats> {
         queryPreview: "What is the difference between Lenz's law and Faraday's law of induction?",
         tokensUsed: 390,
         latencyMs: 690,
-        timestamp: new Date(Date.now() - 85 * 60 * 1000).toISOString(),
+        timestamp: "2026-03-01T10:35:00.000Z",
       },
     ],
   };
