@@ -163,3 +163,4 @@ If a database migration fails or causes data incompatibility:
 npx prisma migrate resolve --rolled-back "<migration_name>"
 ```
 3. Deploy a compensatory migration rather than altering applied migration files in production.
+

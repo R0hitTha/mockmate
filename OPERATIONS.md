@@ -154,3 +154,4 @@ In the payment gateway dashboard, configure the webhook endpoint:
 npx prisma migrate resolve --rolled-back "<migration_name>"
 ```
 4. Deploy the fix via a forward corrective migration.
+

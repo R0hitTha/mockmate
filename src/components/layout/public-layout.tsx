@@ -84,7 +84,7 @@ export function PublicLayout({ children }: PublicLayoutProps) {
               variant="ghost"
               size="sm"
               asChild
-              className="hidden sm:inline-flex text-xs font-semibold"
+              className="text-xs font-semibold text-foreground hover:text-primary"
             >
               <Link href="/login">Sign In</Link>
             </Button>

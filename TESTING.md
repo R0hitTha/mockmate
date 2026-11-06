@@ -130,3 +130,4 @@ Before opening a pull request or deploying a release, verify:
 - [ ] `npm test` passes all 153 tests with zero failures.
 - [ ] `npm run build` succeeds across all 58 routes without compilation warnings.
 - [ ] No hardcoded passwords, test tokens, or live API keys exist in git status.
+

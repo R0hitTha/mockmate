@@ -136,3 +136,4 @@ If you discover a security vulnerability within MockMate, we encourage responsib
    - Affected routes, parameters, or models.
 3. **Commitment:** We commit to acknowledging receipt within 24 hours, evaluating the severity, and deploying a remediation patch within 72 hours for critical issues.
 4. **Public Disclosure:** Please refrain from publicly disclosing the issue until a patch has been deployed to production.
+
