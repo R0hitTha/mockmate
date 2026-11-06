@@ -63,3 +63,4 @@ export const assignSubscriptionSchema = z.object({
 });
 
 export type AssignSubscriptionInput = z.infer<typeof assignSubscriptionSchema>;
+

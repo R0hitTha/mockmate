@@ -9,7 +9,7 @@ describe("Phase 1: Project Foundation & Architecture Tests", () => {
     expect(siteConfig.tagline).toBe("Rise Above the Competition");
     expect(siteConfig.targetExams).toContain("CUET UG 2026");
     expect(siteConfig.targetExams).toContain("CUET UG 2027");
-    expect(siteConfig.currentPhase).toBe("Phase 3: Public Website Development");
+    expect(siteConfig.currentPhase).toBe("Phase 15: Testing, Security & Production Deployment");
   });
 
   it("should support all three mandatory CUET sections", () => {

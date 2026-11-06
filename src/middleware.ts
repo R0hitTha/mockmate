@@ -15,7 +15,14 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/practice") ||
     pathname.startsWith("/analytics") ||
     pathname.startsWith("/planner") ||
-    pathname.startsWith("/bookmarks");
+    pathname.startsWith("/bookmarks") ||
+    pathname.startsWith("/mock-tests") ||
+    pathname.startsWith("/exam") ||
+    pathname.startsWith("/results") ||
+    pathname.startsWith("/mistakes") ||
+    pathname.startsWith("/study-planner") ||
+    pathname.startsWith("/ai-assistant") ||
+    pathname.startsWith("/subscription");
 
   const isAdminRoute = pathname.startsWith("/admin");
 
@@ -45,6 +52,13 @@ export const config = {
     "/analytics/:path*",
     "/planner/:path*",
     "/bookmarks/:path*",
+    "/mock-tests/:path*",
+    "/exam/:path*",
+    "/results/:path*",
+    "/mistakes/:path*",
+    "/study-planner/:path*",
+    "/ai-assistant/:path*",
+    "/subscription/:path*",
     "/admin/:path*",
   ],
 };

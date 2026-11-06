@@ -4,7 +4,7 @@ export const siteConfig = {
   description:
     "A focused, high-precision CUET UG preparation platform providing realistic CBT mock tests, instant scoring, and actionable performance insights.",
   url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
-  currentPhase: "Phase 3: Public Website Development",
+  currentPhase: "Phase 15: Testing, Security & Production Deployment",
   targetExams: ["CUET UG 2026", "CUET UG 2027"],
   supportedSections: [
     { id: "ia-ib", name: "Section IA & IB: Languages" },
