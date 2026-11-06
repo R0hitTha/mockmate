@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { GoogleButton } from "@/components/auth/google-button";
+import { Logo } from "@/components/brand/logo";
 import { loginSchema, type LoginInput } from "@/lib/validations/auth";
 import { authClient } from "@/lib/auth-client";
 
@@ -317,8 +318,8 @@ export default function LoginPage() {
         <Container size="sm">
           <div className="max-w-md mx-auto space-y-6">
             <div className="text-center space-y-2">
-              <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 flex items-center justify-center mx-auto mb-2 border border-blue-100 dark:border-blue-900/60 shadow-xs">
-                <LogIn className="w-6 h-6" />
+              <div className="flex justify-center mb-2">
+                <Logo variant="stacked" size="lg" href="/" priority />
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
                 Welcome Back to MockMate
