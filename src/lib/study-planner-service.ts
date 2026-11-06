@@ -198,8 +198,8 @@ const DAY_NAMES: DayOfWeek[] = [
   "SATURDAY",
 ];
 
-export function getMondayOfCurrentWeek(d = new Date()): Date {
-  const date = new Date(d);
+export function getMondayOfCurrentWeek(d?: Date): Date {
+  const date = d ? new Date(d) : new Date();
   const day = date.getDay();
   // day 0 is Sunday, 1 is Monday...
   const diff = date.getDate() - day + (day === 0 ? -6 : 1);

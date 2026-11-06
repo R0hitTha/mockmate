@@ -1,4 +1,5 @@
 import React from "react";
+import { connection } from "next/server";
 import { requireRole } from "@/lib/auth-server";
 import { AdminLayout } from "@/components/layout/admin-layout";
 import { AdminDashboardClientView } from "./admin-dashboard-client-view";
@@ -7,6 +8,7 @@ import { getAdminDashboardStats } from "@/lib/admin-service";
 export const instant = false;
 
 export default async function AdminDashboardPage() {
+  await connection();
   const session = await requireRole([
     "SUPER_ADMIN",
     "ADMIN",

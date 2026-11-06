@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
+import { connection } from "next/server";
 import Link from "next/link";
 import { ArrowLeft, FileCheck2 } from "lucide-react";
 import { getServerSession } from "@/lib/auth-server";
@@ -32,6 +33,7 @@ export async function generateMetadata({
 }
 
 export default async function ResultPage({ params }: ResultPageProps) {
+  await connection();
   const session = await getServerSession();
   if (!session?.user?.id) {
     redirect("/login");

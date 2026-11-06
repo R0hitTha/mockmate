@@ -1,11 +1,13 @@
 import React from "react";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { getServerSession, getStudentProfile } from "@/lib/auth-server";
 import { ProfileForm } from "@/components/profile/profile-form";
 
 export const instant = false;
 
 export default async function ProfilePage() {
+  await connection();
   const session = await getServerSession();
 
   if (!session?.user?.id) {

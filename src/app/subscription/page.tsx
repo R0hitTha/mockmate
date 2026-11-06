@@ -1,5 +1,6 @@
 import React from "react";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { StudentLayout } from "@/components/layout/student-layout";
 import { SubscriptionClientView } from "./subscription-client-view";
 import { getServerSession, getStudentProfile } from "@/lib/auth-server";
@@ -11,6 +12,7 @@ import {
 export const instant = false;
 
 export default async function StudentSubscriptionPage() {
+  await connection();
   const session = await getServerSession();
   if (!session?.user?.id) {
     redirect("/login?callbackUrl=/subscription");

@@ -1,5 +1,6 @@
 import React from "react";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
 import { StudentLayout } from "@/components/layout/student-layout";
@@ -17,6 +18,7 @@ interface ReviewPageProps {
 }
 
 export default async function MistakeReviewPage({ searchParams }: ReviewPageProps) {
+  await connection();
   const session = await getServerSession();
   if (!session?.user?.id) {
     redirect("/login?callbackUrl=/mistakes/review");

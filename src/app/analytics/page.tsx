@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { getServerSession, getStudentProfile } from "@/lib/auth-server";
 import { getStudentAnalytics } from "@/lib/analytics-service";
 import { StudentLayout } from "@/components/layout/student-layout";
@@ -32,6 +33,7 @@ interface AnalyticsPageProps {
 }
 
 export default async function AnalyticsPage({ searchParams }: AnalyticsPageProps) {
+  await connection();
   const session = await getServerSession();
   if (!session?.user?.id) {
     redirect("/login?callbackUrl=/analytics");

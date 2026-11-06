@@ -1,5 +1,6 @@
 import React from "react";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import Link from "next/link";
 import { AlertCircle, ArrowRight, BookOpen } from "lucide-react";
 import { StudentLayout } from "@/components/layout/student-layout";
@@ -16,6 +17,7 @@ import { MistakeEmptyState } from "@/components/mistakes/mistake-empty-state";
 export const instant = false;
 
 export default async function MistakesPage() {
+  await connection();
   const session = await getServerSession();
   if (!session?.user?.id) {
     redirect("/login?callbackUrl=/mistakes");

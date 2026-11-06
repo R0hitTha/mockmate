@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import Link from "next/link";
 import {
   FileCheck2,
@@ -35,6 +36,7 @@ interface StudentMockTestsPageProps {
 export default async function StudentMockTestsPage({
   searchParams,
 }: StudentMockTestsPageProps) {
+  await connection();
   const session = await getServerSession();
   if (!session?.user?.id) {
     redirect("/login?callbackUrl=/mock-tests");

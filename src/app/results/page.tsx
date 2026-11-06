@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { getServerSession } from "@/lib/auth-server";
 import { getStudentResults } from "@/lib/evaluation-service";
 import { StudentLayout } from "@/components/layout/student-layout";
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ResultsHistoryPage() {
+  await connection();
   const session = await getServerSession();
   if (!session?.user?.id) {
     redirect("/login?callbackUrl=/results");

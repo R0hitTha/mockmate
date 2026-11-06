@@ -1,5 +1,6 @@
 import React from "react";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { StudentLayout } from "@/components/layout/student-layout";
 import { Container } from "@/components/layout/container";
 import { getServerSession, getStudentProfile } from "@/lib/auth-server";
@@ -21,6 +22,7 @@ import { UpcomingDeadlines } from "@/components/dashboard/upcoming-deadlines";
 export const instant = false;
 
 export default async function DashboardPage() {
+  await connection();
   const session = await getServerSession();
 
   // Route protection: Must be authenticated
