@@ -19,7 +19,6 @@ import { DashboardStudyPlannerCard } from "@/components/planner/dashboard-study-
 import { PreparationRecommendations } from "@/components/dashboard/preparation-recommendations";
 import { UpcomingDeadlines } from "@/components/dashboard/upcoming-deadlines";
 
-export const instant = false;
 
 export default async function DashboardPage() {
   await connection();

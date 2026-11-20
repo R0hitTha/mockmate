@@ -17,7 +17,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getSubscriptionPlans } from "@/lib/entitlement-service";
 
-export const instant = false;
 
 export const metadata: Metadata = {
   title: "Test Packs & Pricing — MockMate",

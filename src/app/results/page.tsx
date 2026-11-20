@@ -8,7 +8,6 @@ import { StudentLayout } from "@/components/layout/student-layout";
 import { Container } from "@/components/layout/container";
 import { ResultsHistoryTable } from "@/components/results/results-history-table";
 
-export const instant = false;
 
 export const metadata: Metadata = {
   title: "My Examination Results — MockMate",

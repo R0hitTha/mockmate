@@ -12,7 +12,6 @@ import { PublicLayout } from "@/components/layout/public-layout";
 import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
 
-export const instant = false;
 
 export const metadata: Metadata = {
   title: "CUET UG Subjects & Syllabus Catalogue — MockMate",

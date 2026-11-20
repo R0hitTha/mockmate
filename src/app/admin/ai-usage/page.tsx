@@ -4,7 +4,6 @@ import { AdminLayout } from "@/components/layout/admin-layout";
 import { AIUsageClientView } from "./ai-usage-client-view";
 import { getAITelemetryStats } from "@/lib/admin-service";
 
-export const instant = false;
 
 export default async function AdminAIUsagePage() {
   const session = await requireRole([

@@ -11,7 +11,6 @@ import { StartTestDialog } from "@/components/mock-tests/start-test-dialog";
 
 
 
-export const instant = false;
 
 interface StudentMockTestDetailPageProps {
   params: Promise<{

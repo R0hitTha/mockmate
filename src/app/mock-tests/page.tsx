@@ -17,7 +17,6 @@ import { getStudentMockTests } from "@/lib/mock-test-service";
 
 
 
-export const instant = false;
 
 export const metadata: Metadata = {
   title: "Mock Test Library — MockMate",

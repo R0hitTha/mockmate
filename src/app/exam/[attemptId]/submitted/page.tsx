@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Logo } from "@/components/brand/logo";
 
-export const instant = false;
 
 interface SubmissionPageProps {
   params: Promise<{

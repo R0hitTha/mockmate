@@ -84,13 +84,13 @@ export function Logo({
     const dim = dimensions.stacked[size];
     imageContent = (
       <>
-        {/* Light mode stacked logo */}
+        {/* Light mode stacked logo (deep navy text on light backgrounds) */}
         <Image
           src="/images/logo.png"
           alt="MockMate — Prepare • Practice • Excel"
           width={dim.width}
           height={dim.height}
-          className={cn("object-contain block dark:hidden", stackedSizes[size])}
+          className={cn("object-contain block [.dark_&]:hidden", stackedSizes[size])}
           priority={isPriority}
         />
         {/* Dark mode stacked logo with high-contrast text */}
@@ -99,7 +99,7 @@ export function Logo({
           alt="MockMate — Prepare • Practice • Excel"
           width={dim.width}
           height={dim.height}
-          className={cn("object-contain hidden dark:block", stackedSizes[size])}
+          className={cn("object-contain hidden [.dark_&]:block", stackedSizes[size])}
           priority={isPriority}
         />
       </>
@@ -109,13 +109,13 @@ export function Logo({
     const dim = dimensions.horizontal[size];
     imageContent = (
       <>
-        {/* Light mode horizontal logo */}
+        {/* Light mode horizontal logo (deep navy 'Mock' + purple 'Mate' on light backgrounds) */}
         <Image
           src="/images/logo-horizontal.png"
           alt="MockMate — Prepare • Practice • Excel"
           width={dim.width}
           height={dim.height}
-          className={cn("object-contain block dark:hidden", horizontalSizes[size])}
+          className={cn("object-contain block [.dark_&]:hidden", horizontalSizes[size])}
           priority={isPriority}
         />
         {/* Dark mode horizontal logo with crisp white 'Mock' and vibrant purple 'Mate' */}
@@ -124,7 +124,7 @@ export function Logo({
           alt="MockMate — Prepare • Practice • Excel"
           width={dim.width}
           height={dim.height}
-          className={cn("object-contain hidden dark:block", horizontalSizes[size])}
+          className={cn("object-contain hidden [.dark_&]:block", horizontalSizes[size])}
           priority={isPriority}
         />
       </>

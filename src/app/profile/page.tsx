@@ -4,7 +4,6 @@ import { connection } from "next/server";
 import { getServerSession, getStudentProfile } from "@/lib/auth-server";
 import { ProfileForm } from "@/components/profile/profile-form";
 
-export const instant = false;
 
 export default async function ProfilePage() {
   await connection();

@@ -4,7 +4,6 @@ import { AdminLayout } from "@/components/layout/admin-layout";
 import { PlansClientView } from "./plans-client-view";
 import { getSubscriptionPlans } from "@/lib/entitlement-service";
 
-export const instant = false;
 
 export default async function AdminPlansPage() {
   const session = await requireRole([

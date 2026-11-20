@@ -37,6 +37,9 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+// Force dynamic server rendering across the application
+export const dynamic = "force-dynamic";
+
 export default function RootLayout({
   children,
 }: Readonly<{

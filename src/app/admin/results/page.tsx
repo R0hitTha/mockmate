@@ -5,7 +5,6 @@ import { getAdminResults } from "@/lib/evaluation-service";
 import { AdminLayout } from "@/components/layout/admin-layout";
 import { AdminResultsTable } from "@/components/admin/results/admin-results-table";
 
-export const instant = false;
 
 export const metadata: Metadata = {
   title: "Admin Results Management — MockMate",

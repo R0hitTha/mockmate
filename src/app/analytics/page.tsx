@@ -17,7 +17,6 @@ import { InsightsSection } from "@/components/analytics/insights-section";
 import { AnalyticsEmptyState } from "@/components/analytics/analytics-empty-state";
 import type { AnalyticsPeriod } from "@/lib/validations/analytics";
 
-export const instant = false;
 
 export const metadata: Metadata = {
   title: "Performance Analytics & Diagnostics — MockMate",

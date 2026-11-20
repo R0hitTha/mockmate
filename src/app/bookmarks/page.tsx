@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { getServerSession, getStudentProfile } from "@/lib/auth-server";
 import { getStudentBookmarks } from "@/lib/mistake-service";
 
-export const instant = false;
 
 interface BookmarksPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

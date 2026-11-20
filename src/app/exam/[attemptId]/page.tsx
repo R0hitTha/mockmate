@@ -5,7 +5,6 @@ import { getServerSession } from "@/lib/auth-server";
 import { getAttemptForExam, type ExamPayload } from "@/lib/cbt-service";
 import { CBTExamInterface } from "@/components/exam/cbt-exam-interface";
 
-export const instant = false;
 
 interface ExamPageProps {
   params: Promise<{

@@ -5,7 +5,6 @@ import { getSyllabusCascade } from "@/lib/question-service";
 import { AdminLayout } from "@/components/layout/admin-layout";
 import { QuestionForm } from "@/components/admin/question-bank/question-form";
 
-export const instant = false;
 
 export const metadata: Metadata = {
   title: "Create Question — MockMate Admin",

@@ -16,7 +16,6 @@ import { Badge } from "@/components/ui/badge";
 import { ReviewDialog } from "@/components/admin/question-bank/review-dialog";
 import { QuestionForm } from "@/components/admin/question-bank/question-form";
 
-export const instant = false;
 
 interface QuestionDetailPageProps {
   params: Promise<{

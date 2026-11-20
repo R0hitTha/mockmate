@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { getServerSession, getStudentProfile } from "@/lib/auth-server";
 import { getStudentPlanHistory } from "@/lib/study-planner-service";
 
-export const instant = false;
 
 export default async function PlannerHistoryPage() {
   const session = await getServerSession();

@@ -4,7 +4,6 @@ import { AdminLayout } from "@/components/layout/admin-layout";
 import { AuditLogsClientView } from "./audit-logs-client-view";
 import { getAdminAuditLogs } from "@/lib/admin-service";
 
-export const instant = false;
 
 interface AuditLogsPageProps {
   searchParams: Promise<{

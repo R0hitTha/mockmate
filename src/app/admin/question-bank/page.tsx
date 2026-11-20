@@ -9,7 +9,6 @@ import { AdminLayout } from "@/components/layout/admin-layout";
 import { QuestionTable } from "@/components/admin/question-bank/question-table";
 import { Button } from "@/components/ui/button";
 
-export const instant = false;
 
 export const metadata: Metadata = {
   title: "Question Bank Management — MockMate Admin",

@@ -6,7 +6,6 @@ import { getServerSession, getStudentProfile } from "@/lib/auth-server";
 import { getStudentStudyPreferences } from "@/lib/study-planner-service";
 import { PlannerSettingsClientView } from "./planner-settings-client-view";
 
-export const instant = false;
 
 export default async function PlannerSettingsPage() {
   const session = await getServerSession();

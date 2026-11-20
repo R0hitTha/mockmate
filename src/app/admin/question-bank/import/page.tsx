@@ -4,7 +4,6 @@ import { requireRole } from "@/lib/auth-server";
 import { AdminLayout } from "@/components/layout/admin-layout";
 import { CsvImportView } from "@/components/admin/question-bank/csv-import";
 
-export const instant = false;
 
 export const metadata: Metadata = {
   title: "Bulk Question Import — MockMate Admin",

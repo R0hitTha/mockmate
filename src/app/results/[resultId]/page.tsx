@@ -14,7 +14,6 @@ import { SectionBreakdown } from "@/components/results/section-breakdown";
 import { QuestionSolutionViewer } from "@/components/results/question-solution-viewer";
 import type { TestResultData } from "@/lib/validations/evaluation";
 
-export const instant = false;
 
 interface ResultPageProps {
   params: Promise<{

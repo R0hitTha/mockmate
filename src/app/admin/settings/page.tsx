@@ -4,7 +4,6 @@ import { AdminLayout } from "@/components/layout/admin-layout";
 import { SettingsClientView } from "./settings-client-view";
 import { getPlatformSettings } from "@/lib/admin-service";
 
-export const instant = false;
 
 export default async function AdminSettingsPage() {
   const session = await requireRole([

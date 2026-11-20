@@ -9,7 +9,6 @@ import {
   getSubscriptionPlans,
 } from "@/lib/entitlement-service";
 
-export const instant = false;
 
 export default async function StudentSubscriptionPage() {
   await connection();

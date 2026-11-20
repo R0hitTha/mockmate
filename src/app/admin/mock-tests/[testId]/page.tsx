@@ -13,7 +13,6 @@ import { getSubjects, getExamYears } from "@/lib/syllabus-service";
 
 
 
-export const instant = false;
 
 interface MockTestDetailPageProps {
   params: Promise<{

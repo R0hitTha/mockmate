@@ -7,7 +7,6 @@ import { getServerSession, getStudentProfile } from "@/lib/auth-server";
 import { getStudentStudyPlannerData } from "@/lib/study-planner-service";
 import { StudyPlannerClientView } from "./study-planner-client-view";
 
-export const instant = false;
 
 export default async function StudyPlannerPage() {
   await connection();

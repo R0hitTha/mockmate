@@ -14,7 +14,6 @@ import { TopicsToRevisitSection } from "@/components/mistakes/topics-to-revisit-
 import { MistakeRecommendationsCard } from "@/components/mistakes/mistake-recommendations-card";
 import { MistakeEmptyState } from "@/components/mistakes/mistake-empty-state";
 
-export const instant = false;
 
 export default async function MistakesPage() {
   await connection();

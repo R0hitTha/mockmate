@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { getServerSession, getStudentProfile } from "@/lib/auth-server";
 import { OnboardingWizard } from "@/components/onboarding/onboarding-wizard";
 
-export const instant = false;
 
 export default async function OnboardingPage() {
   const session = await getServerSession();

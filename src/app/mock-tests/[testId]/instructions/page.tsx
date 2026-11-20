@@ -5,7 +5,6 @@ import { getServerSession, getStudentProfile } from "@/lib/auth-server";
 import { getMockTestById } from "@/lib/mock-test-service";
 import { InstructionsViewer } from "@/components/exam/instructions-viewer";
 
-export const instant = false;
 
 interface InstructionsPageProps {
   params: Promise<{

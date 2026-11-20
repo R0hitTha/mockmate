@@ -8,7 +8,6 @@ import { StudentLayout } from "@/components/layout/student-layout";
 import { PublicLayout } from "@/components/layout/public-layout";
 import { Container } from "@/components/layout/container";
 
-export const instant = false;
 
 interface SubjectDetailPageProps {
   params: Promise<{

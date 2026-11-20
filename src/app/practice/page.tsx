@@ -5,7 +5,6 @@ import { StudentLayout } from "@/components/layout/student-layout";
 import { FutureModuleCard } from "@/components/dashboard/future-module-card";
 import { getServerSession, getStudentProfile } from "@/lib/auth-server";
 
-export const instant = false;
 
 export default async function PracticePage() {
   const session = await getServerSession();

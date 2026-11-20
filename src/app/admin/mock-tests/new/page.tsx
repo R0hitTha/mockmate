@@ -8,7 +8,6 @@ import { getAvailableQuestionsForTestBuilder } from "@/lib/mock-test-service";
 
 
 
-export const instant = false;
 
 export const metadata: Metadata = {
   title: "Build New Mock Test — MockMate Admin",

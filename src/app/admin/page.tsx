@@ -5,7 +5,6 @@ import { AdminLayout } from "@/components/layout/admin-layout";
 import { AdminDashboardClientView } from "./admin-dashboard-client-view";
 import { getAdminDashboardStats } from "@/lib/admin-service";
 
-export const instant = false;
 
 export default async function AdminDashboardPage() {
   await connection();

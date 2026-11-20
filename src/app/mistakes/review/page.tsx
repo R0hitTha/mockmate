@@ -11,7 +11,6 @@ import { MistakeFilterSchema } from "@/lib/validations/mistakes";
 import { MistakeReviewFilters } from "@/components/mistakes/mistake-review-filters";
 import { MistakeReviewCard } from "@/components/mistakes/mistake-review-card";
 
-export const instant = false;
 
 interface ReviewPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

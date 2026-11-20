@@ -5,7 +5,6 @@ import { AdminLayout } from "@/components/layout/admin-layout";
 import { StudentDetailClientView } from "./student-detail-client-view";
 import { getAdminStudentDetail } from "@/lib/admin-service";
 
-export const instant = false;
 
 interface StudentDetailPageProps {
   params: Promise<{

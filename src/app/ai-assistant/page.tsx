@@ -5,7 +5,6 @@ import { Container } from "@/components/layout/container";
 import { getServerSession, getStudentProfile } from "@/lib/auth-server";
 import { AIChatInterface } from "@/components/ai/ai-chat-interface";
 
-export const instant = false;
 
 export default async function AIAssistantPage() {
   const session = await getServerSession();
