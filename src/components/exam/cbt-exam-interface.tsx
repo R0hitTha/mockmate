@@ -155,26 +155,8 @@ export function CBTExamInterface({ payload }: CBTExamInterfaceProps) {
     return `${pad(minutes)}:${pad(seconds)}`;
   };
 
-  // Initial mount: ensure first question is recorded as NOT_ANSWERED if previously NOT_VISITED
-  useEffect(() => {
-    const firstQ = allFlattenedQuestions[0];
-    if (firstQ) {
-      const ans = payload.answers[firstQ.id];
-      if (!ans || ans.answerStatus === "NOT_VISITED") {
-        saveAttemptAnswerAction({
-          attemptId: attempt.id,
-          questionId: firstQ.id,
-          selectedOptionId: null,
-          markedForReview: false,
-          answerStatus: "NOT_ANSWERED",
-          clientVersion: ans?.version || 1,
-        }).catch(() => {
-          // Silently tolerate
-        });
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Initial mount: first question status is already initialized as NOT_ANSWERED in answersMap state
+  // to avoid concurrent Server Action conflicts with React 19 router transitions during mount.
 
   // Save Answer helper
   const persistAnswer = async (
@@ -342,31 +324,29 @@ export function CBTExamInterface({ payload }: CBTExamInterfaceProps) {
     }
     setIsPaletteOpenMobile(false);
 
-    // If target question was NOT_VISITED, transition to NOT_ANSWERED
-    setAnswersMap((prev) => {
-      const existing = prev[targetQ.id];
-      if (existing && existing.answerStatus === "NOT_VISITED") {
-        const updated: LocalAnswerState = {
+    // If target question was NOT_VISITED, transition to NOT_ANSWERED safely outside render
+    const existing = answersMap[targetQ.id];
+    if (existing && existing.answerStatus === "NOT_VISITED") {
+      setAnswersMap((prev) => ({
+        ...prev,
+        [targetQ.id]: {
           ...existing,
           answerStatus: "NOT_ANSWERED",
-        };
-        saveAttemptAnswerAction({
-          attemptId: attempt.id,
-          questionId: targetQ.id,
-          selectedOptionId: null,
-          markedForReview: false,
-          answerStatus: "NOT_ANSWERED",
-          clientVersion: existing.version,
-        }).catch(() => {
-          // Silently tolerate
-        });
-        return {
-          ...prev,
-          [targetQ.id]: updated,
-        };
-      }
-      return prev;
-    });
+        },
+      }));
+
+      // Fire async action in background outside setState updater to prevent React 19 render cycle conflict
+      saveAttemptAnswerAction({
+        attemptId: attempt.id,
+        questionId: targetQ.id,
+        selectedOptionId: null,
+        markedForReview: false,
+        answerStatus: "NOT_ANSWERED",
+        clientVersion: existing.version,
+      }).catch(() => {
+        // Silently tolerate network/offline
+      });
+    }
   };
 
   // Final Submit Handler

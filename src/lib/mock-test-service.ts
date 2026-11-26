@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { SAMPLE_MOCK_TESTS } from "./mock-test-sample-data";
+import { SAMPLE_QUESTIONS } from "./question-sample-data";
 
 export interface MockTestFilterOptions {
   search?: string;
@@ -512,25 +513,51 @@ export async function getMockTestById(idOrSlug: string, isStudent: boolean = fal
     sections: sample.sections.map((s) => ({
       ...s,
       subjectId: "sample-subject-id",
-      questions: s.questionCodes.map((code, idx) => ({
-        id: `mock-q-${code}`,
-        mockQuestionId: `mq-link-${code}`,
-        questionCode: code,
-        questionNumber: idx + 1,
-        order: idx + 1,
-        marks: 5.0,
-        negativeMarks: 1.0,
-        questionType: "MCQ_SINGLE",
-        questionText: `Sample question representation for ${code}`,
-        passage: null,
-        explanation: isStudent ? null : "Sample detailed step-by-step explanation.",
-        options: [
-          { id: "opt-1", optionLabel: "A", optionText: "Option A", isCorrect: isStudent ? undefined : true, order: 1 },
-          { id: "opt-2", optionLabel: "B", optionText: "Option B", isCorrect: isStudent ? undefined : false, order: 2 },
-          { id: "opt-3", optionLabel: "C", optionText: "Option C", isCorrect: isStudent ? undefined : false, order: 3 },
-          { id: "opt-4", optionLabel: "D", optionText: "Option D", isCorrect: isStudent ? undefined : false, order: 4 },
-        ],
-      })),
+      questions: s.questionCodes.map((code, idx) => {
+        const found = SAMPLE_QUESTIONS.find((q) => q.questionCode === code);
+        if (found) {
+          return {
+            id: `mock-q-${code}`,
+            mockQuestionId: `mq-link-${code}`,
+            questionCode: code,
+            questionNumber: idx + 1,
+            order: idx + 1,
+            marks: found.marks,
+            negativeMarks: found.negativeMarks,
+            questionType: found.questionType,
+            questionText: found.questionText,
+            passage: found.passage || null,
+            explanation: isStudent ? null : found.explanation,
+            options: found.options.map((opt, optIdx) => ({
+              id: `opt-${code}-${opt.optionLabel.toLowerCase()}`,
+              optionLabel: opt.optionLabel,
+              optionText: opt.optionText,
+              isCorrect: isStudent ? undefined : opt.isCorrect,
+              order: opt.order || optIdx + 1,
+            })),
+          };
+        }
+
+        return {
+          id: `mock-q-${code}`,
+          mockQuestionId: `mq-link-${code}`,
+          questionCode: code,
+          questionNumber: idx + 1,
+          order: idx + 1,
+          marks: 5.0,
+          negativeMarks: 1.0,
+          questionType: "MCQ_SINGLE",
+          questionText: `Which of the following principles accurately describes the fundamental concept associated with ${code}?`,
+          passage: null,
+          explanation: isStudent ? null : "Comprehensive official standard explanation.",
+          options: [
+            { id: `opt-${code}-a`, optionLabel: "A", optionText: "Statement correctly applying the governing scientific law", isCorrect: isStudent ? undefined : true, order: 1 },
+            { id: `opt-${code}-b`, optionLabel: "B", optionText: "Alternative proposition with inverse dimensional scaling", isCorrect: isStudent ? undefined : false, order: 2 },
+            { id: `opt-${code}-c`, optionLabel: "C", optionText: "Condition violating thermodynamic equilibrium constraints", isCorrect: isStudent ? undefined : false, order: 3 },
+            { id: `opt-${code}-d`, optionLabel: "D", optionText: "Uncorrelated theoretical extrapolation", isCorrect: isStudent ? undefined : false, order: 4 },
+          ],
+        };
+      }),
     })),
   };
 }

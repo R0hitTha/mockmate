@@ -96,11 +96,11 @@ export const SAMPLE_MOCK_TESTS: SampleMockTest[] = [
       },
       {
         id: "sec-phy-01-b",
-        title: "Section B: Modern Physics & Magnetism",
+        title: "Section B: Modern Physics & Current Electricity",
         subjectCode: "314",
         subjectName: "Physics",
         sectionType: "COMPULSORY",
-        description: "Advanced applications covering magnetic effects, electromagnetic induction, and modern physics.",
+        description: "Advanced applications covering magnetic effects, current electricity, and modern physics.",
         order: 2,
         duration: 20,
         totalMarks: 100,
@@ -144,7 +144,7 @@ export const SAMPLE_MOCK_TESTS: SampleMockTest[] = [
     sections: [
       {
         id: "sec-gt-01-a",
-        title: "Section 1: General Knowledge & Current Affairs",
+        title: "Section 1: General Knowledge, Polity & Geography",
         subjectCode: "501",
         subjectName: "General Test",
         sectionType: "COMPULSORY",
@@ -154,11 +154,11 @@ export const SAMPLE_MOCK_TESTS: SampleMockTest[] = [
         totalMarks: 100,
         totalQuestions: 20,
         questionsToAttempt: 15,
-        questionCodes: ["Q-GEN-2026-005"],
+        questionCodes: ["Q-GEN-2026-025"],
       },
       {
         id: "sec-gt-01-b",
-        title: "Section 2: Reasoning & Quantitative Aptitude",
+        title: "Section 2: Reasoning, Arithmetic & Quantitative Aptitude",
         subjectCode: "501",
         subjectName: "General Test",
         sectionType: "COMPULSORY",
@@ -201,7 +201,7 @@ export const SAMPLE_MOCK_TESTS: SampleMockTest[] = [
     sections: [
       {
         id: "sec-math-01-a",
-        title: "Section A: Compulsory Core Mathematics",
+        title: "Section A: Compulsory Core Mathematics & Calculus",
         subjectCode: "319",
         subjectName: "Mathematics",
         sectionType: "COMPULSORY",
@@ -241,7 +241,7 @@ export const SAMPLE_MOCK_TESTS: SampleMockTest[] = [
     sections: [
       {
         id: "sec-chem-draft-a",
-        title: "Section 1: Solutions & Electrochemistry",
+        title: "Section 1: Solutions, Kinetics & Coordination Chemistry",
         subjectCode: "306",
         subjectName: "Chemistry",
         sectionType: "COMPULSORY",
